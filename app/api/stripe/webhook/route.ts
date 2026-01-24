@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { generateSimpleLicenseKey, calculateExpiryDate } from '@/lib/license';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-11-20.acacia',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -36,7 +34,7 @@ export async function POST(req: NextRequest) {
   // Handle the event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
-    
+
     await handleCheckoutComplete(session);
   }
 
@@ -119,7 +117,7 @@ async function sendLicenseEmail(email: string, licenseKey: string, plan: string)
     - The Renaime Team
     ========================
   `);
-  
+
   // In production, use an email service:
   // await sendEmail({
   //   to: email,

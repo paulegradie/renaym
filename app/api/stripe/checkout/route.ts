@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-11-20.acacia',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,8 +15,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Get the price ID from environment variables
-    const priceId = plan === 'pro' 
-      ? process.env.STRIPE_PRICE_ID_PRO 
+    const priceId = plan === 'pro'
+      ? process.env.STRIPE_PRICE_ID_PRO
       : process.env.STRIPE_PRICE_ID_LIFETIME;
 
     if (!priceId) {
