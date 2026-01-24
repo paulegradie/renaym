@@ -3,36 +3,43 @@
 import { useState, useEffect } from 'react';
 
 const RELEASES_BASE = "https://github.com/paulegradie/Renaime.App/releases";
+
+// Lambda API endpoint - TODO: Update with actual deployed Lambda URL
+const DOWNLOADS_API_URL = process.env.NEXT_PUBLIC_DOWNLOADS_API_URL || "https://your-lambda-api.amazonaws.com/api/downloads";
+
+// Fallback to GitHub API if Lambda fails
 const GITHUB_API_URL = "https://api.github.com/repos/paulegradie/Renaime.App/releases/latest";
 
-interface ReleaseAsset {
-  name: string;
-  browser_download_url: string;
+interface DownloadInfo {
+  filename: string;
+  version: string;
+  download_url: string;
+  error?: string;
 }
 
-interface ReleaseData {
-  tag_name: string;
-  assets: ReleaseAsset[];
+interface LambdaResponse {
+  version?: string;
+  client: {
+    windows: DownloadInfo | { error: string };
+    linux: DownloadInfo | { error: string };
+    'macos-intel': DownloadInfo | { error: string };
+    'macos-arm': DownloadInfo | { error: string };
+  };
+  server: {
+    windows: DownloadInfo | { error: string };
+    linux: DownloadInfo | { error: string };
+    'macos-intel': DownloadInfo | { error: string };
+    'macos-arm': DownloadInfo | { error: string };
+  };
 }
 
 interface PlatformDownload {
   platform: string;
   icon: string;
   description: string;
-  runtime: string;
+  platformKey: 'windows' | 'linux' | 'macos-intel' | 'macos-arm';
   downloadUrl: string | null;
 }
-
-// Extract version from tag (e.g., "v1.0.45" -> "1.0.45")
-const extractVersion = (tagName: string): string => {
-  return tagName.replace(/^v/, '');
-};
-
-// Find asset URL by runtime pattern
-const findAssetUrl = (assets: ReleaseAsset[], pattern: string): string | null => {
-  const asset = assets.find(a => a.name.includes(pattern));
-  return asset?.browser_download_url || null;
-};
 
 // Default platform definitions
 const DEFAULT_PLATFORMS: PlatformDownload[] = [
@@ -40,31 +47,36 @@ const DEFAULT_PLATFORMS: PlatformDownload[] = [
     platform: "Windows",
     icon: "🪟",
     description: "Windows 10 or later (64-bit)",
-    runtime: "win-x64",
+    platformKey: "windows",
     downloadUrl: null,
   },
   {
     platform: "macOS (Intel)",
     icon: "🍎",
     description: "macOS 11 (Big Sur) or later - Intel Macs",
-    runtime: "osx-x64",
+    platformKey: "macos-intel",
     downloadUrl: null,
   },
   {
     platform: "macOS (Apple Silicon)",
     icon: "🍎",
     description: "macOS 11 (Big Sur) or later - M1/M2/M3 Macs",
-    runtime: "osx-arm64",
+    platformKey: "macos-arm",
     downloadUrl: null,
   },
   {
     platform: "Linux",
     icon: "🐧",
     description: "Ubuntu 20.04+ or equivalent (64-bit)",
-    runtime: "linux-x64",
+    platformKey: "linux",
     downloadUrl: null,
   },
 ];
+
+// Helper to check if response has error
+const hasError = (item: DownloadInfo | { error: string }): item is { error: string } => {
+  return 'error' in item && typeof item.error === 'string' && !('download_url' in item);
+};
 
 export default function DownloadPage() {
   const [loading, setLoading] = useState(true);
@@ -73,44 +85,94 @@ export default function DownloadPage() {
   const [platforms, setPlatforms] = useState<PlatformDownload[]>(DEFAULT_PLATFORMS);
 
   useEffect(() => {
-    const fetchRelease = async () => {
+    const fetchFromLambda = async (): Promise<boolean> => {
       try {
-        const response = await fetch(GITHUB_API_URL);
+        const response = await fetch(DOWNLOADS_API_URL);
         if (!response.ok) {
-          throw new Error('Failed to fetch release information');
+          return false;
         }
-        const data: ReleaseData = await response.json();
+        const data: LambdaResponse = await response.json();
 
-        const ver = extractVersion(data.tag_name);
-        setVersion(ver);
+        if (data.version) {
+          setVersion(data.version);
+        }
 
-        // Map platforms to their download URLs from the release assets
+        // Map platforms to their download URLs from Lambda response
         setPlatforms([
           {
             ...DEFAULT_PLATFORMS[0],
-            downloadUrl: data.assets.find(a => a.name.includes('Client') && a.name.includes('win-x64'))?.browser_download_url || null,
+            downloadUrl: hasError(data.client.windows) ? null : data.client.windows.download_url,
           },
           {
             ...DEFAULT_PLATFORMS[1],
-            downloadUrl: data.assets.find(a => a.name.includes('Client') && a.name.includes('osx-x64') && !a.name.includes('arm64'))?.browser_download_url || null,
+            downloadUrl: hasError(data.client['macos-intel']) ? null : data.client['macos-intel'].download_url,
           },
           {
             ...DEFAULT_PLATFORMS[2],
-            downloadUrl: data.assets.find(a => a.name.includes('Client') && a.name.includes('osx-arm64'))?.browser_download_url || null,
+            downloadUrl: hasError(data.client['macos-arm']) ? null : data.client['macos-arm'].download_url,
           },
           {
             ...DEFAULT_PLATFORMS[3],
-            downloadUrl: data.assets.find(a => a.name.includes('Client') && a.name.includes('linux-x64'))?.browser_download_url || null,
+            downloadUrl: hasError(data.client.linux) ? null : data.client.linux.download_url,
           },
         ]);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
+        return true;
+      } catch {
+        return false;
       }
     };
 
-    fetchRelease();
+    const fetchFromGitHub = async (): Promise<boolean> => {
+      try {
+        const response = await fetch(GITHUB_API_URL);
+        if (!response.ok) {
+          return false;
+        }
+        const data = await response.json();
+
+        const ver = data.tag_name?.replace(/^v/, '') || null;
+        setVersion(ver);
+
+        // Map platforms to their download URLs from GitHub release assets
+        setPlatforms([
+          {
+            ...DEFAULT_PLATFORMS[0],
+            downloadUrl: data.assets?.find((a: { name: string }) => a.name.includes('Client') && a.name.includes('win-x64'))?.browser_download_url || null,
+          },
+          {
+            ...DEFAULT_PLATFORMS[1],
+            downloadUrl: data.assets?.find((a: { name: string }) => a.name.includes('Client') && a.name.includes('osx-x64') && !a.name.includes('arm64'))?.browser_download_url || null,
+          },
+          {
+            ...DEFAULT_PLATFORMS[2],
+            downloadUrl: data.assets?.find((a: { name: string }) => a.name.includes('Client') && a.name.includes('osx-arm64'))?.browser_download_url || null,
+          },
+          {
+            ...DEFAULT_PLATFORMS[3],
+            downloadUrl: data.assets?.find((a: { name: string }) => a.name.includes('Client') && a.name.includes('linux-x64'))?.browser_download_url || null,
+          },
+        ]);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    const fetchDownloads = async () => {
+      // Try Lambda API first, fall back to GitHub if it fails
+      let success = await fetchFromLambda();
+      if (!success) {
+        console.log('Lambda API failed, falling back to GitHub Releases API');
+        success = await fetchFromGitHub();
+      }
+
+      if (!success) {
+        setError('Failed to fetch download information');
+      }
+      setLoading(false);
+    };
+
+    fetchDownloads();
   }, []);
 
   return (
@@ -136,7 +198,7 @@ export default function DownloadPage() {
 
           {platforms.map((platform) => (
             <PlatformCard
-              key={platform.runtime}
+              key={platform.platformKey}
               platform={platform.platform}
               icon={platform.icon}
               description={platform.description}
