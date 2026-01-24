@@ -1,5 +1,3 @@
-const isProd = process.env.NODE_ENV === 'production';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Enable static export for GitHub Pages
@@ -10,9 +8,8 @@ const nextConfig = {
     unoptimized: true,
   },
 
-  // Base path for GitHub Pages subdirectory (renaym.com)
-  // Only apply in production, so local dev works at localhost:3000/
-  basePath: isProd ? '/renaym' : '',
+  // No base path needed - using custom domain renaym.com
+  basePath: '',
 
   // Trailing slash for GitHub Pages compatibility
   trailingSlash: true,
