@@ -40,6 +40,17 @@ export default function Header() {
             >
               GitHub
             </a>
+            <a
+              href="https://github.com/paulegradie/renaym/issues/new/choose"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 text-zinc-400 hover:text-pink-400 transition-colors inline-flex items-center gap-1.5"
+            >
+              <span>Feedback</span>
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </a>
             <Link
               href="/download"
               className="ml-4 px-5 py-2 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white font-medium rounded-full hover:opacity-90 transition-opacity"
@@ -78,6 +89,17 @@ export default function Header() {
                 className="px-4 py-3 text-zinc-400 hover:text-white hover:bg-white/5 rounded-lg transition"
               >
                 GitHub
+              </a>
+              <a
+                href="https://github.com/paulegradie/renaym/issues/new/choose"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-3 text-zinc-400 hover:text-pink-400 hover:bg-white/5 rounded-lg transition inline-flex items-center gap-2"
+              >
+                <span>Feedback</span>
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
               </a>
             </div>
           </div>
