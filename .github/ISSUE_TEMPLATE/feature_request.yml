@@ -1,0 +1,75 @@
+name: 💡 Suggest an Idea
+description: Have an idea to make renaym better? We'd love to hear it!
+title: "[Idea]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## We love hearing your ideas! 💡
+        
+        Your feedback helps shape the future of renaym. 
+        Tell us what would make the app work better for you!
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What's your idea?
+      description: Describe the feature or improvement you'd like to see.
+      placeholder: "Example: It would be great if renaym could automatically organize files into folders by year."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Help us understand why this would be useful for you.
+      placeholder: "Example: Right now I have to manually create year folders, which takes extra time when organizing my media library."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Have you tried any workarounds?
+      description: Are you currently doing anything to work around this limitation?
+      placeholder: "Example: I've been using a separate tool to organize folders after renaming, but it would be easier to do it all in one place."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: What area does this relate to?
+      options:
+        - File renaming
+        - Subtitle handling
+        - User interface / design
+        - Performance / speed
+        - Movie/TV matching accuracy
+        - Setup / configuration
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: importance
+    attributes:
+      label: How important is this to you?
+      options:
+        - Nice to have
+        - Would use it regularly
+        - Really need this feature
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Anything else?
+      description: Any other context, examples, or screenshots that would help explain your idea?
+      placeholder: "Add any other details..."
+    validations:
+      required: false
+

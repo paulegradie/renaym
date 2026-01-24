@@ -1,0 +1,66 @@
+name: ❓ Ask a Question
+description: Need help or have a question about using renaym?
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Need help? We're here for you! 🤝
+        
+        Ask your question below and we'll do our best to help.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What would you like to know?
+      placeholder: "Example: How do I set up my TMDB API key?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: topic
+    attributes:
+      label: What is this about?
+      options:
+        - Getting started / Setup
+        - How to use a feature
+        - Understanding results
+        - Troubleshooting
+        - Licensing
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you already tried?
+      description: Let us know what you've already looked at or attempted.
+      placeholder: "Example: I looked at the setup wizard but couldn't find where to enter my API key."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: What operating system are you using?
+      options:
+        - Windows
+        - macOS (Intel)
+        - macOS (Apple Silicon / M1/M2/M3)
+        - Linux
+        - Not applicable
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Anything else?
+      description: Screenshots or additional context that might help us answer your question.
+      placeholder: "Add any other details..."
+    validations:
+      required: false
+
