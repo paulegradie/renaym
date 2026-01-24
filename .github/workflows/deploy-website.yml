@@ -45,6 +45,7 @@ jobs:
       - name: Build Next.js site
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.API_GATEWAY_URL }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
         run: npm run build
 
       - name: Upload artifact
