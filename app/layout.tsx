@@ -4,8 +4,22 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Renaime - Intelligent Media File Renamer",
-  description: "An intelligent media file renamer with AI-powered filename parsing and TMDB integration",
+  title: "renaym - AI-Powered Media Renaming",
+  description: "Intelligent media file renaming with AI-powered filename parsing and TMDB integration. Organize your movie and TV library effortlessly.",
+  keywords: "media renamer, file renamer, movie organizer, TV show organizer, TMDB, AI, filename parser",
+  authors: [{ name: "renaym" }],
+  openGraph: {
+    title: "renaym - AI-Powered Media Renaming",
+    description: "Intelligent media file renaming with AI-powered filename parsing and TMDB integration.",
+    url: "https://renaym.com",
+    siteName: "renaym",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "renaym - AI-Powered Media Renaming",
+    description: "Intelligent media file renaming with AI-powered filename parsing and TMDB integration.",
+  },
 };
 
 export default function RootLayout({
@@ -18,11 +32,11 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-sans">
+      <body className="font-sans min-h-screen flex flex-col">
         <Header />
-        <main>{children}</main>
+        <main className="flex-1 pt-16">{children}</main>
         <Footer />
       </body>
     </html>

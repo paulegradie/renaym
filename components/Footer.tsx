@@ -4,33 +4,45 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-gray-400 py-12 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="relative bg-zinc-950 border-t border-white/5 py-16 mt-auto overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-purple-500/10 via-pink-500/5 to-transparent blur-3xl pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <span className="text-2xl">🎬</span>
-              <span className="text-xl font-bold text-white">Renaime</span>
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-lg blur-md opacity-60" />
+                <div className="relative bg-zinc-900 rounded-lg p-1.5">
+                  <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                    <polyline points="10 17 15 12 10 7" />
+                    <line x1="15" y1="12" x2="3" y2="12" />
+                  </svg>
+                </div>
+              </div>
+              <span className="text-xl font-bold gradient-text">renaym</span>
             </div>
-            <p className="text-sm">
-              An intelligent media file renamer with AI-powered filename parsing.
+            <p className="text-zinc-500 text-sm max-w-sm">
+              AI-powered media renaming. Intelligent filename parsing meets TMDB metadata for the perfect library.
             </p>
           </div>
           <div>
             <h3 className="text-white font-semibold mb-4">Product</h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/download" className="hover:text-white transition">
+                <Link href="/download" className="text-zinc-500 hover:text-white transition">
                   Download
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-white transition">
+                <Link href="/pricing" className="text-zinc-500 hover:text-white transition">
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link href="/docs" className="hover:text-white transition">
+                <Link href="/docs" className="text-zinc-500 hover:text-white transition">
                   Docs
                 </Link>
               </li>
@@ -38,23 +50,23 @@ export default function Footer() {
           </div>
           <div>
             <h3 className="text-white font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-3 text-sm">
               <li>
-                <a 
-                  href="https://github.com/TheGradieCatalog/Renaime" 
+                <a
+                  href="https://github.com/paulegradie/Renaym"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition"
+                  className="text-zinc-500 hover:text-white transition"
                 >
                   GitHub
                 </a>
               </li>
               <li>
-                <a 
-                  href="https://github.com/TheGradieCatalog/Renaime/releases" 
+                <a
+                  href="https://github.com/paulegradie/Renaym/releases"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition"
+                  className="text-zinc-500 hover:text-white transition"
                 >
                   Releases
                 </a>
@@ -62,8 +74,8 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
-          <p>&copy; {currentYear} Renaime. All rights reserved.</p>
+        <div className="border-t border-white/5 mt-12 pt-8 text-sm text-center text-zinc-600">
+          <p>&copy; {currentYear} renaym. All rights reserved.</p>
         </div>
       </div>
     </footer>

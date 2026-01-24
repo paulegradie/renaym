@@ -4,19 +4,20 @@ export default function DocsPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="hero-gradient text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="hero-gradient text-white py-20 relative overflow-hidden">
+        <div className="absolute inset-0 grid-bg opacity-30" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Documentation</h1>
-          <p className="text-xl text-gray-300">
-            Everything you need to get started with Renaime
+          <p className="text-xl text-zinc-400">
+            Everything you need to get started with renaym
           </p>
         </div>
       </section>
 
       {/* Quick Navigation */}
-      <section className="py-8 bg-white border-b">
+      <section className="py-6 bg-zinc-900/50 backdrop-blur-sm border-b border-white/5 sticky top-16 z-40">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap gap-2 justify-center">
             <NavPill href="#getting-started" label="Getting Started" />
             <NavPill href="#installation" label="Installation" />
             <NavPill href="#usage" label="Usage" />
@@ -28,32 +29,39 @@ export default function DocsPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-12">
+      <section className="py-12 bg-zinc-950">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 
           {/* Getting Started */}
           <DocSection id="getting-started" icon="🚀" title="Getting Started">
-            <p className="text-gray-600 text-lg mb-6">
-              Renaime is an intelligent media file renamer that uses AI-powered parsing and TMDB metadata
+            <p className="text-zinc-400 text-lg mb-6">
+              renaym is an intelligent media file renamer that uses AI-powered parsing and TMDB metadata
               to help you organize your movie and TV show library.
             </p>
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-lg border border-indigo-100">
-              <h4 className="font-semibold text-gray-900 mb-3">📋 Prerequisites</h4>
-              <ul className="space-y-2">
+            <div className="glass-card p-6 rounded-xl">
+              <h4 className="font-semibold text-white mb-4 flex items-center">
+                <span className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg mr-3">
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                </span>
+                Prerequisites
+              </h4>
+              <ul className="space-y-3">
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
-                  <span><strong>TMDB API Key</strong> — Get one free at{' '}
+                  <span className="text-emerald-400 mr-3 mt-0.5">✓</span>
+                  <span className="text-zinc-300"><strong className="text-white">TMDB API Key</strong> — Get one free at{' '}
                     <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                       themoviedb.org
                     </a>
-                    <span className="block text-sm text-gray-500 mt-1">
+                    <span className="block text-sm text-zinc-500 mt-1">
                       ⚠️ Use the <strong>API Key</strong> (v3 auth), not the &quot;API Read Access Token&quot;
                     </span>
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
-                  <span><strong>.NET 8 Runtime</strong> — Included in standalone downloads</span>
+                  <span className="text-emerald-400 mr-3 mt-0.5">✓</span>
+                  <span className="text-zinc-300"><strong className="text-white">.NET 8 Runtime</strong> — Included in standalone downloads</span>
                 </li>
               </ul>
             </div>
@@ -63,7 +71,7 @@ export default function DocsPage() {
           <DocSection id="installation" icon="📦" title="Installation">
             <div className="space-y-4">
               <StepCard number={1} title="Download">
-                Download Renaime for your platform from the{' '}
+                Download renaym for your platform from the{' '}
                 <Link href="/download" className="text-primary hover:underline font-medium">
                   download page
                 </Link>
@@ -108,10 +116,10 @@ export default function DocsPage() {
                 description="Click 'Execute Rename' to rename your files"
               />
             </div>
-            <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-              <p className="text-amber-800 flex items-center">
+            <div className="mt-4 p-4 glass-card rounded-xl border-amber-500/20">
+              <p className="text-amber-300 flex items-center">
                 <span className="mr-2">↩️</span>
-                <span><strong>Pro tip:</strong> Use &quot;Undo Last&quot; if you need to revert any changes</span>
+                <span><strong className="text-amber-200">Pro tip:</strong> Use &quot;Undo Last&quot; if you need to revert any changes</span>
               </p>
             </div>
           </DocSection>
@@ -154,17 +162,17 @@ export default function DocsPage() {
 
           {/* Configuration */}
           <DocSection id="configuration" icon="⚙️" title="Configuration">
-            <p className="text-gray-600 mb-6">
+            <p className="text-zinc-400 mb-6">
               Settings are managed through the Settings panel in the application. You can configure:
             </p>
-            <div className="bg-gray-900 rounded-lg p-6 text-sm overflow-x-auto">
-              <div className="text-gray-400 mb-2">// Available settings</div>
-              <div className="space-y-1 font-mono">
-                <div><span className="text-purple-400">TMDB API Key</span> <span className="text-gray-500">— Required for metadata lookup</span></div>
-                <div><span className="text-purple-400">LLM Model Path</span> <span className="text-gray-500">— Optional, for AI parsing</span></div>
-                <div><span className="text-purple-400">Movie Template</span> <span className="text-gray-500">— e.g., &quot;&#123;Title&#125; (&#123;Year&#125;)&quot;</span></div>
-                <div><span className="text-purple-400">TV Template</span> <span className="text-gray-500">— e.g., &quot;&#123;Title&#125; S&#123;Season&#125;E&#123;Episode&#125;&quot;</span></div>
-                <div><span className="text-purple-400">Cache Settings</span> <span className="text-gray-500">— Configure caching behavior</span></div>
+            <div className="glass-card rounded-xl p-6 text-sm overflow-x-auto">
+              <div className="text-zinc-500 mb-3">// Available settings</div>
+              <div className="space-y-2 font-mono">
+                <div><span className="text-purple-400">TMDB API Key</span> <span className="text-zinc-500">— Required for metadata lookup</span></div>
+                <div><span className="text-purple-400">LLM Model Path</span> <span className="text-zinc-500">— Optional, for AI parsing</span></div>
+                <div><span className="text-purple-400">Movie Template</span> <span className="text-zinc-500">— e.g., &quot;&#123;Title&#125; (&#123;Year&#125;)&quot;</span></div>
+                <div><span className="text-purple-400">TV Template</span> <span className="text-zinc-500">— e.g., &quot;&#123;Title&#125; S&#123;Season&#125;E&#123;Episode&#125;&quot;</span></div>
+                <div><span className="text-purple-400">Cache Settings</span> <span className="text-zinc-500">— Configure caching behavior</span></div>
               </div>
             </div>
           </DocSection>
@@ -188,20 +196,24 @@ export default function DocsPage() {
           </DocSection>
 
           {/* Support CTA */}
-          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white text-center">
-            <h3 className="text-2xl font-bold mb-3">Need Help?</h3>
-            <p className="text-indigo-100 mb-6">
-              For issues and feature requests, visit our GitHub repository
-            </p>
-            <a
-              href="https://github.com/paulegradie/Renaime.App/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-white text-indigo-600 font-semibold rounded-lg hover:bg-gray-100 transition"
-            >
-              <span className="mr-2">🐙</span>
-              Open GitHub Issues
-            </a>
+          <div className="relative overflow-hidden rounded-2xl p-8 text-center">
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-500/20" />
+            <div className="absolute inset-0 glass-card" />
+            <div className="relative">
+              <h3 className="text-2xl font-bold text-white mb-3">Need Help?</h3>
+              <p className="text-zinc-400 mb-6">
+                For issues and feature requests, visit our GitHub repository
+              </p>
+              <a
+                href="https://github.com/paulegradie/Renaym/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-3 bg-white text-zinc-900 font-semibold rounded-full hover:bg-zinc-100 transition"
+              >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
+                Open GitHub Issues
+              </a>
+            </div>
           </div>
 
         </div>
@@ -215,7 +227,7 @@ function NavPill({ href, label }: { href: string; label: string }) {
   return (
     <a
       href={href}
-      className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-primary hover:text-white transition"
+      className="px-4 py-2 text-sm font-medium text-zinc-400 bg-zinc-800/50 rounded-full hover:bg-primary hover:text-white transition"
     >
       {label}
     </a>
@@ -230,10 +242,10 @@ function DocSection({ id, icon, title, children }: {
   children: React.ReactNode
 }) {
   return (
-    <div id={id} className="scroll-mt-24">
+    <div id={id} className="scroll-mt-32">
       <div className="flex items-center mb-6">
         <span className="text-3xl mr-3">{icon}</span>
-        <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+        <h2 className="text-2xl font-bold text-white">{title}</h2>
       </div>
       {children}
     </div>
@@ -247,13 +259,13 @@ function StepCard({ number, title, children }: {
   children: React.ReactNode
 }) {
   return (
-    <div className="flex items-start p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-      <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full font-bold text-sm mr-4">
+    <div className="flex items-start p-4 glass-card rounded-xl">
+      <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gradient-to-br from-pink-500 to-purple-500 text-white rounded-full font-bold text-sm mr-4">
         {number}
       </div>
       <div>
-        <h4 className="font-semibold text-gray-900">{title}</h4>
-        <p className="text-gray-600 text-sm">{children}</p>
+        <h4 className="font-semibold text-white">{title}</h4>
+        <p className="text-zinc-400 text-sm">{children}</p>
       </div>
     </div>
   );
@@ -267,13 +279,13 @@ function UsageCard({ step, icon, title, description }: {
   description: string
 }) {
   return (
-    <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition">
+    <div className="p-4 glass-card rounded-xl hover:bg-white/[0.06] transition">
       <div className="flex items-center mb-2">
         <span className="text-2xl mr-2">{icon}</span>
-        <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded">Step {step}</span>
+        <span className="text-xs font-medium text-primary bg-primary/20 px-2 py-0.5 rounded">Step {step}</span>
       </div>
-      <h4 className="font-semibold text-gray-900 mb-1">{title}</h4>
-      <p className="text-gray-600 text-sm">{description}</p>
+      <h4 className="font-semibold text-white mb-1">{title}</h4>
+      <p className="text-zinc-400 text-sm">{description}</p>
     </div>
   );
 }
@@ -285,10 +297,10 @@ function FeatureCard({ icon, title, description }: {
   description: string
 }) {
   return (
-    <div className="p-4 bg-white border border-gray-200 rounded-lg">
+    <div className="p-4 glass-card rounded-xl">
       <span className="text-2xl">{icon}</span>
-      <h4 className="font-semibold text-gray-900 mt-2 mb-1">{title}</h4>
-      <p className="text-gray-600 text-sm">{description}</p>
+      <h4 className="font-semibold text-white mt-2 mb-1">{title}</h4>
+      <p className="text-zinc-400 text-sm">{description}</p>
     </div>
   );
 }
@@ -296,12 +308,12 @@ function FeatureCard({ icon, title, description }: {
 // Troubleshoot Card Component
 function TroubleshootCard({ question, answer }: { question: string; answer: string }) {
   return (
-    <div className="p-4 bg-white border border-gray-200 rounded-lg">
-      <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
-        <span className="text-amber-500 mr-2">❓</span>
+    <div className="p-4 glass-card rounded-xl">
+      <h4 className="font-semibold text-white mb-2 flex items-center">
+        <span className="text-amber-400 mr-2">❓</span>
         {question}
       </h4>
-      <p className="text-gray-600 text-sm pl-6">{answer}</p>
+      <p className="text-zinc-400 text-sm pl-6">{answer}</p>
     </div>
   );
 }

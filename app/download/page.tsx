@@ -2,13 +2,10 @@
 
 import { useState, useEffect } from 'react';
 
-const RELEASES_BASE = "https://github.com/paulegradie/Renaime.App/releases";
-
-// Lambda API endpoint - TODO: Update with actual deployed Lambda URL
-const DOWNLOADS_API_URL = process.env.NEXT_PUBLIC_DOWNLOADS_API_URL || "https://your-lambda-api.amazonaws.com/api/downloads";
-
-// Fallback to GitHub API if Lambda fails
-const GITHUB_API_URL = "https://api.github.com/repos/paulegradie/Renaime.App/releases/latest";
+// Lambda API endpoint for S3 downloads
+const DOWNLOADS_API_URL = process.env.NEXT_PUBLIC_API_URL
+  ? `${process.env.NEXT_PUBLIC_API_URL}/api/downloads`
+  : "https://your-api-gateway.amazonaws.com/api/downloads";
 
 interface DownloadInfo {
   filename: string;
@@ -25,53 +22,15 @@ interface LambdaResponse {
     'macos-intel': DownloadInfo | { error: string };
     'macos-arm': DownloadInfo | { error: string };
   };
-  server: {
-    windows: DownloadInfo | { error: string };
-    linux: DownloadInfo | { error: string };
-    'macos-intel': DownloadInfo | { error: string };
-    'macos-arm': DownloadInfo | { error: string };
-  };
 }
 
 interface PlatformDownload {
   platform: string;
-  icon: string;
+  icon: React.ReactNode;
   description: string;
   platformKey: 'windows' | 'linux' | 'macos-intel' | 'macos-arm';
   downloadUrl: string | null;
 }
-
-// Default platform definitions
-const DEFAULT_PLATFORMS: PlatformDownload[] = [
-  {
-    platform: "Windows",
-    icon: "🪟",
-    description: "Windows 10 or later (64-bit)",
-    platformKey: "windows",
-    downloadUrl: null,
-  },
-  {
-    platform: "macOS (Intel)",
-    icon: "🍎",
-    description: "macOS 11 (Big Sur) or later - Intel Macs",
-    platformKey: "macos-intel",
-    downloadUrl: null,
-  },
-  {
-    platform: "macOS (Apple Silicon)",
-    icon: "🍎",
-    description: "macOS 11 (Big Sur) or later - M1/M2/M3 Macs",
-    platformKey: "macos-arm",
-    downloadUrl: null,
-  },
-  {
-    platform: "Linux",
-    icon: "🐧",
-    description: "Ubuntu 20.04+ or equivalent (64-bit)",
-    platformKey: "linux",
-    downloadUrl: null,
-  },
-];
 
 // Helper to check if response has error
 const hasError = (item: DownloadInfo | { error: string }): item is { error: string } => {
@@ -82,7 +41,12 @@ export default function DownloadPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState<string | null>(null);
-  const [platforms, setPlatforms] = useState<PlatformDownload[]>(DEFAULT_PLATFORMS);
+  const [platforms, setPlatforms] = useState<PlatformDownload[]>([
+    { platform: "Windows", icon: <WindowsIcon />, description: "Windows 10 or later (64-bit)", platformKey: "windows", downloadUrl: null },
+    { platform: "macOS (Intel)", icon: <AppleIcon />, description: "macOS 11 (Big Sur) or later - Intel Macs", platformKey: "macos-intel", downloadUrl: null },
+    { platform: "macOS (Apple Silicon)", icon: <AppleIcon />, description: "macOS 11 (Big Sur) or later - M1/M2/M3 Macs", platformKey: "macos-arm", downloadUrl: null },
+    { platform: "Linux", icon: <LinuxIcon />, description: "Ubuntu 20.04+ or equivalent (64-bit)", platformKey: "linux", downloadUrl: null },
+  ]);
 
   useEffect(() => {
     const fetchFromLambda = async (): Promise<boolean> => {
@@ -97,60 +61,11 @@ export default function DownloadPage() {
           setVersion(data.version);
         }
 
-        // Map platforms to their download URLs from Lambda response
-        setPlatforms([
-          {
-            ...DEFAULT_PLATFORMS[0],
-            downloadUrl: hasError(data.client.windows) ? null : data.client.windows.download_url,
-          },
-          {
-            ...DEFAULT_PLATFORMS[1],
-            downloadUrl: hasError(data.client['macos-intel']) ? null : data.client['macos-intel'].download_url,
-          },
-          {
-            ...DEFAULT_PLATFORMS[2],
-            downloadUrl: hasError(data.client['macos-arm']) ? null : data.client['macos-arm'].download_url,
-          },
-          {
-            ...DEFAULT_PLATFORMS[3],
-            downloadUrl: hasError(data.client.linux) ? null : data.client.linux.download_url,
-          },
-        ]);
-        return true;
-      } catch {
-        return false;
-      }
-    };
-
-    const fetchFromGitHub = async (): Promise<boolean> => {
-      try {
-        const response = await fetch(GITHUB_API_URL);
-        if (!response.ok) {
-          return false;
-        }
-        const data = await response.json();
-
-        const ver = data.tag_name?.replace(/^v/, '') || null;
-        setVersion(ver);
-
-        // Map platforms to their download URLs from GitHub release assets
-        setPlatforms([
-          {
-            ...DEFAULT_PLATFORMS[0],
-            downloadUrl: data.assets?.find((a: { name: string }) => a.name.includes('Client') && a.name.includes('win-x64'))?.browser_download_url || null,
-          },
-          {
-            ...DEFAULT_PLATFORMS[1],
-            downloadUrl: data.assets?.find((a: { name: string }) => a.name.includes('Client') && a.name.includes('osx-x64') && !a.name.includes('arm64'))?.browser_download_url || null,
-          },
-          {
-            ...DEFAULT_PLATFORMS[2],
-            downloadUrl: data.assets?.find((a: { name: string }) => a.name.includes('Client') && a.name.includes('osx-arm64'))?.browser_download_url || null,
-          },
-          {
-            ...DEFAULT_PLATFORMS[3],
-            downloadUrl: data.assets?.find((a: { name: string }) => a.name.includes('Client') && a.name.includes('linux-x64'))?.browser_download_url || null,
-          },
+        setPlatforms(prev => [
+          { ...prev[0], downloadUrl: hasError(data.client.windows) ? null : data.client.windows.download_url },
+          { ...prev[1], downloadUrl: hasError(data.client['macos-intel']) ? null : data.client['macos-intel'].download_url },
+          { ...prev[2], downloadUrl: hasError(data.client['macos-arm']) ? null : data.client['macos-arm'].download_url },
+          { ...prev[3], downloadUrl: hasError(data.client.linux) ? null : data.client.linux.download_url },
         ]);
         return true;
       } catch {
@@ -159,15 +74,9 @@ export default function DownloadPage() {
     };
 
     const fetchDownloads = async () => {
-      // Try Lambda API first, fall back to GitHub if it fails
-      let success = await fetchFromLambda();
+      const success = await fetchFromLambda();
       if (!success) {
-        console.log('Lambda API failed, falling back to GitHub Releases API');
-        success = await fetchFromGitHub();
-      }
-
-      if (!success) {
-        setError('Failed to fetch download information');
+        setError('Failed to fetch download information. Please try again later.');
       }
       setLoading(false);
     };
@@ -176,25 +85,32 @@ export default function DownloadPage() {
   }, []);
 
   return (
-    <section className="py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen py-20 bg-zinc-950 relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute top-20 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+
+      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Download Renaime</h1>
-          <p className="text-xl text-gray-600">Choose your platform and get started</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Download renaym</h1>
+          <p className="text-xl text-zinc-400">Choose your platform and get started in seconds</p>
           {version && (
-            <p className="mt-2 text-lg text-primary font-semibold">Latest Version: v{version}</p>
+            <p className="mt-4 inline-flex items-center px-4 py-2 rounded-full glass-card text-sm">
+              <span className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse" />
+              <span className="text-zinc-300">Latest Version: <span className="text-white font-semibold">v{version}</span></span>
+            </p>
           )}
         </div>
 
         {error && (
-          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-center">
-            {error}. <a href={`${RELEASES_BASE}/latest`} className="underline" target="_blank" rel="noopener noreferrer">View releases on GitHub</a>
+          <div className="mb-8 p-4 glass-card border-red-500/30 rounded-xl text-red-400 text-center">
+            {error}
           </div>
         )}
 
         {/* Platform cards */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Available Platforms</h2>
+          <h2 className="text-lg font-semibold text-zinc-400 mb-4">Available Platforms</h2>
 
           {platforms.map((platform) => (
             <PlatformCard
@@ -210,27 +126,33 @@ export default function DownloadPage() {
         </div>
 
         {/* Requirements */}
-        <div className="mt-12 p-6 bg-blue-50 rounded-lg">
-          <h3 className="font-semibold text-gray-900 mb-3">📋 Getting Started</h3>
-          <ol className="space-y-2 text-gray-700 list-decimal list-inside">
-            <li>Download and extract the archive for your platform</li>
-            <li>Get a free TMDB API key from <a href="https://www.themoviedb.org/settings/api" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">themoviedb.org</a></li>
-            <li>Run the Server, then run the Client</li>
-            <li>Enter your TMDB API key in Settings</li>
-            <li>Activate your license key (received via email after purchase)</li>
+        <div className="mt-12 p-6 glass-card rounded-2xl">
+          <h3 className="font-semibold text-white mb-4 flex items-center">
+            <span className="p-2 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg mr-3">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </span>
+            Getting Started
+          </h3>
+          <ol className="space-y-3 text-zinc-400">
+            <li className="flex items-start">
+              <span className="w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 text-sm flex items-center justify-center mr-3 mt-0.5">1</span>
+              Download and extract the archive for your platform
+            </li>
+            <li className="flex items-start">
+              <span className="w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 text-sm flex items-center justify-center mr-3 mt-0.5">2</span>
+              Run the renaym application
+            </li>
+            <li className="flex items-start">
+              <span className="w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 text-sm flex items-center justify-center mr-3 mt-0.5">3</span>
+              Complete the setup wizard (downloads AI model, configures TMDB API key)
+            </li>
+            <li className="flex items-start">
+              <span className="w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 text-sm flex items-center justify-center mr-3 mt-0.5">4</span>
+              Activate your license key (received via email after purchase)
+            </li>
           </ol>
-        </div>
-
-        {/* All releases link */}
-        <div className="mt-8 text-center">
-          <a
-            href={RELEASES_BASE}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline"
-          >
-            View all releases and changelog on GitHub →
-          </a>
         </div>
       </div>
     </section>
@@ -239,7 +161,7 @@ export default function DownloadPage() {
 
 interface PlatformCardProps {
   platform: string;
-  icon: string;
+  icon: React.ReactNode;
   description: string;
   downloadUrl: string | null;
   loading: boolean;
@@ -248,27 +170,54 @@ interface PlatformCardProps {
 
 function PlatformCard({ platform, icon, description, downloadUrl, loading, version }: PlatformCardProps) {
   return (
-    <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-primary/50 transition">
+    <div className="flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group">
       <div className="flex items-center space-x-4">
-        <span className="text-3xl">{icon}</span>
+        <div className="p-3 bg-zinc-800 rounded-xl text-zinc-300 group-hover:text-white transition">
+          {icon}
+        </div>
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">{platform}</h3>
-          <p className="text-gray-600 text-sm">{description}</p>
+          <h3 className="text-lg font-semibold text-white">{platform}</h3>
+          <p className="text-zinc-500 text-sm">{description}</p>
         </div>
       </div>
       {loading ? (
-        <span className="px-4 py-2 bg-gray-100 text-gray-400 rounded-lg text-sm">Loading...</span>
+        <span className="px-5 py-2.5 bg-zinc-800 text-zinc-500 rounded-full text-sm">Loading...</span>
       ) : downloadUrl ? (
         <a
           href={downloadUrl}
-          className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition text-sm font-medium"
+          className="px-5 py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white rounded-full hover:opacity-90 transition text-sm font-medium"
         >
           Download {version ? `v${version}` : ''}
         </a>
       ) : (
-        <span className="px-4 py-2 bg-gray-100 text-gray-500 rounded-lg text-sm">Not available</span>
+        <span className="px-5 py-2.5 bg-zinc-800 text-zinc-500 rounded-full text-sm">Coming soon</span>
       )}
     </div>
+  );
+}
+
+// Platform icons
+function WindowsIcon() {
+  return (
+    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+    </svg>
+  );
+}
+
+function AppleIcon() {
+  return (
+    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+    </svg>
+  );
+}
+
+function LinuxIcon() {
+  return (
+    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12.504 0c-.155 0-.311.003-.467.008a11.18 11.18 0 0 0-2.907.543A10.88 10.88 0 0 0 4.48 4.48a10.88 10.88 0 0 0-3.929 4.65 11.18 11.18 0 0 0-.543 2.907A10.95 10.95 0 0 0 0 12.504c0 .155.003.311.008.467.068 1.001.245 1.976.543 2.907a10.88 10.88 0 0 0 3.929 4.65 10.88 10.88 0 0 0 4.65 3.929c.931.298 1.906.475 2.907.543.156.005.312.008.467.008s.311-.003.467-.008a11.18 11.18 0 0 0 2.907-.543 10.88 10.88 0 0 0 4.65-3.929 10.88 10.88 0 0 0 3.929-4.65c.298-.931.475-1.906.543-2.907.005-.156.008-.312.008-.467s-.003-.311-.008-.467a11.18 11.18 0 0 0-.543-2.907 10.88 10.88 0 0 0-3.929-4.65 10.88 10.88 0 0 0-4.65-3.929 11.18 11.18 0 0 0-2.907-.543A10.95 10.95 0 0 0 12.504 0z" />
+    </svg>
   );
 }
 
