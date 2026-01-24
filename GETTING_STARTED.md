@@ -9,7 +9,7 @@ A complete, production-ready Next.js website with:
 ✅ **License Management** - Automatic generation and retrieval  
 ✅ **No Database** - Uses Stripe metadata (zero maintenance)  
 ✅ **Free Hosting** - Ready for Vercel (free tier)  
-✅ **Self-Serve** - Users can buy and retrieve licenses automatically  
+✅ **Self-Serve** - Users can buy and retrieve licenses automatically
 
 ## 📁 What's Inside
 
@@ -50,8 +50,8 @@ npm install
 1. Create account at https://stripe.com
 2. Get test API keys from https://dashboard.stripe.com/test/apikeys
 3. Create two products:
-   - **Renaime Pro**: $19/year (recurring)
-   - **Renaime Lifetime**: $49 (one-time)
+   - **Renaime Pro**: $5/month (recurring)
+   - **Renaime Lifetime**: $35 (one-time)
 
 ### 3. Configure Environment
 
@@ -97,6 +97,7 @@ git push
 ```
 
 **That's it!** Vercel handles everything:
+
 - ✅ Auto-deploys on git push
 - ✅ Free SSL certificate
 - ✅ Global CDN
@@ -106,6 +107,7 @@ git push
 ### Option 2: Other Platforms
 
 The site works on any platform that supports Next.js:
+
 - Netlify
 - Railway
 - Render
@@ -116,23 +118,27 @@ The site works on any platform that supports Next.js:
 ### Test Mode vs Live Mode
 
 **Test Mode** (for development):
-- Use test API keys (sk_test_...)
+
+- Use test API keys (sk*test*...)
 - Use test cards (4242 4242 4242 4242)
 - No real money charged
 
 **Live Mode** (for production):
-- Use live API keys (sk_live_...)
+
+- Use live API keys (sk*live*...)
 - Real cards charged
 - Real money transferred
 
 ### Webhook Setup
 
 **Local Development:**
+
 ```bash
 stripe listen --forward-to localhost:3000/api/stripe/webhook
 ```
 
 **Production:**
+
 1. Go to https://dashboard.stripe.com/webhooks
 2. Add endpoint: `https://your-site.vercel.app/api/stripe/webhook`
 3. Select event: `checkout.session.completed`
@@ -172,8 +178,8 @@ colors: {
 Edit `app/pricing/page.tsx`:
 
 ```typescript
-price="$19"  // Change price display
-period="/year"  // Change period
+price = "$5"; // Change price display
+period = "/month"; // Change period
 ```
 
 Don't forget to update Stripe products too!
@@ -196,33 +202,35 @@ Automatically available at `/about`
 ### Purchase Flow
 
 ```
-User clicks "Buy" 
-  → Stripe Checkout 
-  → Payment success 
-  → Webhook fires 
-  → License generated 
-  → Stored in Stripe metadata 
+User clicks "Buy"
+  → Stripe Checkout
+  → Payment success
+  → Webhook fires
+  → License generated
+  → Stored in Stripe metadata
   → Email sent (TODO)
 ```
 
 ### License Retrieval
 
 ```
-User enters email 
-  → Query Stripe 
-  → Find customer 
+User enters email
+  → Query Stripe
+  → Find customer
   → Return license from metadata
 ```
 
 ### No Database!
 
 All data stored in Stripe customer metadata:
+
 - License key
 - Plan type
 - Issue date
 - Expiry date
 
 **Benefits:**
+
 - ✅ Zero database costs
 - ✅ Zero maintenance
 - ✅ Stripe handles backups
@@ -238,16 +246,19 @@ All data stored in Stripe customer metadata:
 ## 🆘 Troubleshooting
 
 **Checkout doesn't work?**
+
 - Check Stripe keys in `.env.local`
 - Check browser console for errors
 - Verify price IDs are correct
 
 **Webhook not firing?**
+
 - Run `stripe listen --forward-to localhost:3000/api/stripe/webhook`
 - Check webhook secret in `.env.local`
 - Check server console for logs
 
 **License not found?**
+
 - Check Stripe dashboard for customer
 - Verify customer has metadata
 - Check email matches exactly
@@ -273,6 +284,7 @@ All data stored in Stripe customer metadata:
 ## 🎉 You're Ready!
 
 Everything is set up and ready to go. Just:
+
 1. Configure Stripe
 2. Run `npm run dev`
 3. Test locally
@@ -282,4 +294,3 @@ Everything is set up and ready to go. Just:
 Questions? Check the other docs or open an issue on GitHub.
 
 Good luck! 🚀
-

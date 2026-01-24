@@ -62,8 +62,8 @@ export default function PricingPage() {
           <PricingCard
             name="Pro"
             description="For serious media collectors"
-            price="$19"
-            period="/year"
+            price="$5"
+            period="/month"
             popular
             features={[
               'Unlimited files',
@@ -82,7 +82,7 @@ export default function PricingPage() {
           <PricingCard
             name="Lifetime"
             description="One-time purchase, forever yours"
-            price="$49"
+            price="$35"
             period="/once"
             features={[
               'Everything in Pro',

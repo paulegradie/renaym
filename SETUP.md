@@ -22,16 +22,16 @@ npm install
 3. **Create Products**
    - Go to https://dashboard.stripe.com/test/products
    - Click "Add product"
-   
+
    **Product 1: Renaime Pro**
    - Name: Renaime Pro
-   - Price: $19
-   - Billing: Recurring, yearly
+   - Price: $5
+   - Billing: Recurring, monthly
    - Copy the Price ID (starts with `price_`)
-   
+
    **Product 2: Renaime Lifetime**
    - Name: Renaime Lifetime
-   - Price: $49
+   - Price: $35
    - Billing: One-time
    - Copy the Price ID (starts with `price_`)
 
@@ -74,6 +74,7 @@ stripe listen --forward-to localhost:3000/api/stripe/webhook
 ```
 
 **Option B: Skip for now**
+
 - You can test the site without webhooks
 - License keys won't be generated, but checkout will work
 
@@ -120,34 +121,36 @@ To send real emails with license keys:
    - https://resend.com
 
 2. **Install Resend**
+
    ```bash
    npm install resend
    ```
 
 3. **Add to `.env.local`**
+
    ```env
    RESEND_API_KEY=re_...
    ```
 
 4. **Update webhook handler**
-   
+
    Edit `app/api/stripe/webhook/route.ts`:
-   
+
    ```typescript
-   import { Resend } from 'resend';
-   
+   import { Resend } from "resend";
+
    const resend = new Resend(process.env.RESEND_API_KEY);
-   
+
    async function sendLicenseEmail(email: string, licenseKey: string, plan: string) {
      await resend.emails.send({
-       from: 'Renaime <noreply@yourdomain.com>',
+       from: "Renaime <noreply@yourdomain.com>",
        to: email,
        subject: `Your Renaime ${plan} License Key`,
        html: `
          <h1>Thank you for purchasing Renaime!</h1>
          <p>Your license key: <strong>${licenseKey}</strong></p>
          <p>To activate, open Renaime and enter this key in Settings.</p>
-       `
+       `,
      });
    }
    ```
@@ -155,6 +158,7 @@ To send real emails with license keys:
 ## 🚀 Deploy to Vercel
 
 1. **Push to GitHub**
+
    ```bash
    git init
    git add .
@@ -183,15 +187,18 @@ Your site is now live and accepting payments! 🎉
 ## 🆘 Troubleshooting
 
 **Checkout button doesn't work?**
+
 - Check browser console for errors
 - Verify Stripe keys in `.env.local`
 - Make sure dev server is running
 
 **Webhook not firing?**
+
 - Make sure Stripe CLI is running: `stripe listen --forward-to localhost:3000/api/stripe/webhook`
 - Check webhook secret in `.env.local`
 
 **License not showing up?**
+
 - Check server console for webhook logs
 - Verify customer was created in Stripe dashboard
 - Check customer metadata in Stripe
@@ -204,4 +211,3 @@ Your site is now live and accepting payments! 🎉
 - [ ] Customize email templates
 - [ ] Add analytics (Vercel Analytics is free)
 - [ ] Set up monitoring (Vercel automatically monitors)
-

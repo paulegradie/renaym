@@ -52,8 +52,8 @@ Open [http://localhost:3000](http://localhost:3000)
 
 1. Go to [Stripe Dashboard](https://dashboard.stripe.com/test/products)
 2. Create two products:
-   - **renaym Pro** - $19/year (recurring)
-   - **renaym Lifetime** - $49 (one-time)
+   - **renaym Pro** - $5/month (recurring)
+   - **renaym Lifetime** - $35 (one-time)
 3. Copy the Price IDs to your `.env.local`
 
 ### 2. Set Up Webhook
