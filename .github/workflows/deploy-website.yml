@@ -4,7 +4,12 @@ on:
   push:
     branches: [main]
     paths:
-      - "website-nextjs/**"
+      - "app/**"
+      - "components/**"
+      - "lib/**"
+      - "package.json"
+      - "package-lock.json"
+      - "next.config.mjs"
       - ".github/workflows/deploy-website.yml"
   workflow_dispatch:
 
@@ -29,17 +34,15 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: website-nextjs/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Install dependencies
-        working-directory: website-nextjs
         run: npm ci
 
       - name: Build Next.js site
-        working-directory: website-nextjs
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.API_GATEWAY_URL }}
         run: npm run build
@@ -47,7 +50,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: website-nextjs/out
+          path: out
 
   deploy:
     environment:
