@@ -10,9 +10,9 @@ const nextConfig = {
     unoptimized: true,
   },
 
-  // Base path for GitHub Pages subdirectory (paulgradie.com/renaime)
+  // Base path for GitHub Pages subdirectory (paulgradie.com/Renaime)
   // Only apply in production, so local dev works at localhost:3000/
-  basePath: isProd ? '/renaime' : '',
+  basePath: isProd ? '/Renaime' : '',
 
   // Trailing slash for GitHub Pages compatibility
   trailingSlash: true,
