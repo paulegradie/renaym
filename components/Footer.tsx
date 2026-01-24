@@ -2,7 +2,6 @@ import Link from 'next/link';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-
   return (
     <footer className="relative bg-zinc-950 border-t border-white/5 py-16 mt-auto overflow-hidden">
       {/* Background glow */}
