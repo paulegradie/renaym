@@ -1,6 +1,6 @@
-# Renaime Website
+# renaym Website
 
-Next.js website for Renaime with Stripe integration for license sales.
+Next.js website for renaym with Stripe integration for license sales.
 
 ## Features
 
@@ -52,8 +52,8 @@ Open [http://localhost:3000](http://localhost:3000)
 
 1. Go to [Stripe Dashboard](https://dashboard.stripe.com/test/products)
 2. Create two products:
-   - **Renaime Pro** - $19/year (recurring)
-   - **Renaime Lifetime** - $49 (one-time)
+   - **renaym Pro** - $19/year (recurring)
+   - **renaym Lifetime** - $49 (one-time)
 3. Copy the Price IDs to your `.env.local`
 
 ### 2. Set Up Webhook
@@ -103,12 +103,14 @@ stripe listen --forward-to localhost:3000/api/stripe/webhook
 ### No Database!
 
 All data is stored in Stripe:
+
 - Customer email
 - License key
 - Plan type
 - Issue/expiry dates
 
 This means:
+
 - ✅ Zero database costs
 - ✅ Zero database maintenance
 - ✅ Stripe handles backups
@@ -125,6 +127,7 @@ This means:
 5. Deploy!
 
 Vercel will:
+
 - Auto-deploy on git push
 - Provide free SSL
 - Handle serverless functions
@@ -146,6 +149,7 @@ NEXT_PUBLIC_URL (your Vercel URL)
 ### Update Stripe Webhook
 
 After deployment, update your Stripe webhook URL to:
+
 ```
 https://your-vercel-domain.vercel.app/api/stripe/webhook
 ```
@@ -160,6 +164,7 @@ Currently, license keys are logged to console. To send real emails:
    - [Mailgun](https://www.mailgun.com) - 5,000 emails/month free
 
 2. Install SDK:
+
 ```bash
 npm install resend
 # or
@@ -167,15 +172,16 @@ npm install @sendgrid/mail
 ```
 
 3. Update `app/api/stripe/webhook/route.ts`:
+
 ```typescript
-import { Resend } from 'resend';
+import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 await resend.emails.send({
-  from: 'Renaime <noreply@yourdomain.com>',
+  from: "renaym <noreply@yourdomain.com>",
   to: email,
-  subject: `Your Renaime ${plan} License Key`,
-  html: `<p>Your license key: <strong>${licenseKey}</strong></p>`
+  subject: `Your renaym ${plan} License Key`,
+  html: `<p>Your license key: <strong>${licenseKey}</strong></p>`,
 });
 ```
 
@@ -208,16 +214,17 @@ website-nextjs/
 ## License Key Format
 
 Simple format (current):
+
 ```
-RENAIME-XXXXX-XXXXX-XXXXX-XXXXX
+RENAYM-XXXXX-XXXXX-XXXXX-XXXXX
 ```
 
 Signed format (optional, requires RSA keys):
+
 ```
 base64(payload).base64(signature)
 ```
 
 ## Support
 
-For issues, see the main [Renaime repository](https://github.com/TheGradieCatalog/Renaime).
-
+For issues, see the main [renaym repository](https://github.com/paulegradie/renaym).

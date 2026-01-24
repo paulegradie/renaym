@@ -1,10 +1,11 @@
-# Renaime Website Architecture
+# renaym Website Architecture
 
 ## 🎯 Design Philosophy
 
 **Simple, Self-Serve, No Database**
 
 This website is designed to be:
+
 - ✅ **Zero maintenance** - No database to manage
 - ✅ **Free to run** - Vercel free tier + Stripe fees only
 - ✅ **Self-serve** - Users can buy and retrieve licenses without support
@@ -94,7 +95,7 @@ This website is designed to be:
 {
   "email": "user@example.com",
   "metadata": {
-    "license_key": "RENAIME-XXXXX-XXXXX-XXXXX-XXXXX",
+    "license_key": "RENAYM-XXXXX-XXXXX-XXXXX-XXXXX",
     "plan": "pro",
     "issued_at": "2024-01-15T10:30:00Z",
     "expires_at": "2025-01-15T10:30:00Z"
@@ -123,6 +124,7 @@ This website is designed to be:
 ### API Routes
 
 All API routes are serverless functions:
+
 - `/api/stripe/checkout` - Creates checkout session
 - `/api/stripe/webhook` - Handles payment events (verified with webhook secret)
 - `/api/retrieve-license` - Retrieves license by email
@@ -130,11 +132,7 @@ All API routes are serverless functions:
 ### Webhook Verification
 
 ```typescript
-const event = stripe.webhooks.constructEvent(
-  body,
-  signature,
-  process.env.STRIPE_WEBHOOK_SECRET
-);
+const event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET);
 ```
 
 This ensures webhooks are actually from Stripe.
@@ -142,11 +140,13 @@ This ensures webhooks are actually from Stripe.
 ### Environment Variables
 
 Sensitive data is stored in environment variables:
+
 - `STRIPE_SECRET_KEY` - Server-side only
 - `STRIPE_WEBHOOK_SECRET` - Server-side only
 - `STRIPE_PRICE_ID_*` - Server-side only
 
 Public variables:
+
 - `NEXT_PUBLIC_URL` - Used in client-side code
 
 ## 📧 Email Integration (Future)
@@ -156,14 +156,14 @@ Currently, license keys are logged to console. To add email:
 ### Option 1: Resend (Recommended)
 
 ```typescript
-import { Resend } from 'resend';
+import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 await resend.emails.send({
-  from: 'Renaime <noreply@yourdomain.com>',
+  from: "renaym <noreply@yourdomain.com>",
   to: email,
-  subject: 'Your License Key',
-  html: emailTemplate
+  subject: "Your License Key",
+  html: emailTemplate,
 });
 ```
 
@@ -172,14 +172,14 @@ await resend.emails.send({
 ### Option 2: SendGrid
 
 ```typescript
-import sgMail from '@sendgrid/mail';
+import sgMail from "@sendgrid/mail";
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 await sgMail.send({
   to: email,
-  from: 'noreply@yourdomain.com',
-  subject: 'Your License Key',
-  html: emailTemplate
+  from: "noreply@yourdomain.com",
+  subject: "Your License Key",
+  html: emailTemplate,
 });
 ```
 
@@ -195,6 +195,7 @@ await sgMail.send({
 4. Deploy!
 
 **Free tier includes:**
+
 - Unlimited deployments
 - Automatic HTTPS
 - Global CDN
@@ -209,7 +210,7 @@ STRIPE_PUBLISHABLE_KEY=pk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_PRICE_ID_PRO=price_...
 STRIPE_PRICE_ID_LIFETIME=price_...
-NEXT_PUBLIC_URL=https://renaime.com
+NEXT_PUBLIC_URL=https://renaym.com
 RESEND_API_KEY=re_...  # Optional
 ```
 
@@ -230,17 +231,20 @@ RESEND_API_KEY=re_...  # Optional
 ## 🔄 Future Enhancements
 
 ### Phase 1 (Current)
+
 - ✅ Stripe checkout
 - ✅ License generation
 - ✅ License retrieval
 - ✅ No database
 
 ### Phase 2 (Next)
+
 - [ ] Email integration (Resend)
 - [ ] Custom email templates
 - [ ] License validation API (for desktop app)
 
 ### Phase 3 (Future)
+
 - [ ] User dashboard (login with email magic link)
 - [ ] Subscription management
 - [ ] Usage analytics
@@ -249,6 +253,7 @@ RESEND_API_KEY=re_...  # Optional
 ### When to Add a Database?
 
 Add a database if you need:
+
 - User accounts with passwords
 - Complex queries/analytics
 - Multiple products/bundles
@@ -260,24 +265,28 @@ Add a database if you need:
 ## 💡 Key Decisions
 
 ### Why Next.js?
+
 - Modern, well-supported
 - Great developer experience
 - Vercel integration
 - API routes built-in
 
 ### Why Stripe Metadata?
+
 - No database needed
 - Stripe already stores customer data
 - Simple to implement
 - Reliable
 
 ### Why Vercel?
+
 - Free tier is generous
 - Auto-deploys from GitHub
 - Great performance
 - Zero config
 
 ### Why Simple License Keys?
+
 - Easy to implement
 - No RSA key management
 - Good enough for MVP
@@ -289,4 +298,3 @@ Add a database if you need:
 - [Stripe Docs](https://stripe.com/docs)
 - [Vercel Docs](https://vercel.com/docs)
 - [Tailwind CSS](https://tailwindcss.com/docs)
-

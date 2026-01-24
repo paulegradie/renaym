@@ -34,7 +34,7 @@ export function generateLicenseKey(data: LicenseData, privateKey: string): strin
 
 /**
  * Generate a simple random license key (for testing without RSA keys)
- * Format: RENAIME-XXXXX-XXXXX-XXXXX-XXXXX
+ * Format: RENAYM-XXXXX-XXXXX-XXXXX-XXXXX
  */
 export function generateSimpleLicenseKey(): string {
   const segments = [];
@@ -42,7 +42,7 @@ export function generateSimpleLicenseKey(): string {
     const segment = crypto.randomBytes(3).toString('hex').toUpperCase().slice(0, 5);
     segments.push(segment);
   }
-  return `RENAIME-${segments.join('-')}`;
+  return `RENAYM-${segments.join('-')}`;
 }
 
 /**
@@ -54,9 +54,9 @@ export function isValidLicenseKeyFormat(key: string): boolean {
     const parts = key.split('.');
     return parts.length === 2 && parts[0].length > 0 && parts[1].length > 0;
   }
-  
-  // Check for simple format (RENAIME-XXXXX-XXXXX-XXXXX-XXXXX)
-  return /^RENAIME-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}$/.test(key);
+
+  // Check for simple format (RENAYM-XXXXX-XXXXX-XXXXX-XXXXX)
+  return /^RENAYM-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}$/.test(key);
 }
 
 /**
@@ -66,7 +66,7 @@ export function calculateExpiryDate(plan: 'pro' | 'lifetime'): string | undefine
   if (plan === 'lifetime') {
     return undefined;
   }
-  
+
   const now = new Date();
   const expiry = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
   return expiry.toISOString();
