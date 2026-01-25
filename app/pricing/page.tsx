@@ -45,7 +45,7 @@ export default function PricingPage() {
           {/* Free Tier */}
           <PricingCard
             name="Free"
-            description="Perfect for trying out renaym"
+            description="Perfect for trying out Renaym"
             price="$0"
             period="/forever"
             features={[

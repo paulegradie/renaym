@@ -1,5 +1,5 @@
 name: ❓ Ask a Question
-description: Need help or have a question about using renaym?
+description: Need help or have a question about using Renaym?
 title: "[Question]: "
 labels: ["question"]
 body:
@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         ## Need help? We're here for you! 🤝
-        
+
         Ask your question below and we'll do our best to help.
 
   - type: textarea
@@ -63,4 +63,3 @@ body:
       placeholder: "Add any other details..."
     validations:
       required: false
-

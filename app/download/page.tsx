@@ -97,7 +97,7 @@ export default function DownloadPage() {
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Download renaym</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Download Renaym</h1>
           <p className="text-xl text-zinc-400">Choose your platform and get started in seconds</p>
           {version && (
             <p className="mt-4 inline-flex items-center px-4 py-2 rounded-full glass-card text-sm">
@@ -168,7 +168,7 @@ export default function DownloadPage() {
             </li>
             <li className="flex items-start">
               <span className="w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 text-sm flex items-center justify-center mr-3 mt-0.5">2</span>
-              Run the renaym application
+              Run the Renaym application
             </li>
             <li className="flex items-start">
               <span className="w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 text-sm flex items-center justify-center mr-3 mt-0.5">3</span>

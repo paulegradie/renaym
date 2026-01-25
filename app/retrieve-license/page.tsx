@@ -122,7 +122,7 @@ export default function RetrieveLicensePage() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-white mb-4">Retrieve Your License</h1>
           <p className="text-xl text-zinc-400">
-            {step === 'email' && 'Enter your email to retrieve your renaym license key'}
+            {step === 'email' && 'Enter your email to retrieve your Renaym license key'}
             {step === 'verify' && 'Enter the verification code sent to your email'}
             {step === 'success' && 'Your license key has been retrieved'}
           </p>
@@ -260,7 +260,7 @@ export default function RetrieveLicensePage() {
 
                 <div className="mt-4 p-4 bg-zinc-800/50 rounded-xl">
                   <p className="text-sm text-zinc-400">
-                    <strong className="text-zinc-300">To activate:</strong> Open renaym → Settings → Enter license key → Activate
+                    <strong className="text-zinc-300">To activate:</strong> Open Renaym → Settings → Enter license key → Activate
                   </p>
                 </div>
               </div>

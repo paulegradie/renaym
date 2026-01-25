@@ -22,7 +22,7 @@ export default function Header() {
                   </svg>
                 </div>
               </div>
-              <span className="text-xl font-bold gradient-text tracking-tight">renaym</span>
+              <span className="text-xl font-bold gradient-text tracking-tight">Renaym</span>
             </Link>
           </div>
 

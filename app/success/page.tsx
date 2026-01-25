@@ -16,7 +16,7 @@ export default function SuccessPage() {
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">Payment Successful!</h1>
           <p className="text-xl text-zinc-400">
-            Thank you for purchasing renaym
+            Thank you for purchasing Renaym
           </p>
         </div>
 
@@ -37,7 +37,7 @@ export default function SuccessPage() {
             <div className="flex items-start space-x-4 p-4 bg-zinc-800/50 rounded-xl">
               <span className="text-2xl">💾</span>
               <div>
-                <h3 className="font-semibold text-white">Download renaym</h3>
+                <h3 className="font-semibold text-white">Download Renaym</h3>
                 <p className="text-zinc-400 text-sm">
                   If you haven't already, download the application for your platform.
                 </p>
@@ -49,7 +49,7 @@ export default function SuccessPage() {
               <div>
                 <h3 className="font-semibold text-white">Activate Your License</h3>
                 <p className="text-zinc-400 text-sm">
-                  Open renaym, go to Settings, and enter your license key to unlock all features.
+                  Open Renaym, go to Settings, and enter your license key to unlock all features.
                 </p>
               </div>
             </div>
@@ -61,7 +61,7 @@ export default function SuccessPage() {
             href="/download"
             className="px-8 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white font-semibold rounded-full hover:opacity-90 transition"
           >
-            Download renaym
+            Download Renaym
           </Link>
           <Link
             href="/retrieve-license"

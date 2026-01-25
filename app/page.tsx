@@ -145,7 +145,7 @@ export default function Home() {
             Ready to transform your library?
           </h2>
           <p className="text-xl text-zinc-400 mb-10 max-w-2xl mx-auto">
-            Download renaym for free and experience the future of media organization.
+            Download Renaym for free and experience the future of media organization.
           </p>
           <Link
             href="/download"

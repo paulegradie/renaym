@@ -9,7 +9,7 @@ export default function DocsPage() {
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Documentation</h1>
           <p className="text-xl text-zinc-400">
-            Everything you need to get started with renaym
+            Everything you need to get started with Renaym
           </p>
         </div>
       </section>
@@ -35,7 +35,7 @@ export default function DocsPage() {
           {/* Getting Started */}
           <DocSection id="getting-started" icon="🚀" title="Getting Started">
             <p className="text-zinc-400 text-lg mb-6">
-              renaym is an intelligent media file renamer that uses AI-powered parsing and TMDB metadata
+              Renaym is an intelligent media file renamer that uses AI-powered parsing and TMDB metadata
               to help you organize your movie and TV show library.
             </p>
             <div className="glass-card p-6 rounded-xl">
@@ -71,7 +71,7 @@ export default function DocsPage() {
           <DocSection id="installation" icon="📦" title="Installation">
             <div className="space-y-4">
               <StepCard number={1} title="Download">
-                Download renaym for your platform from the{' '}
+                Download Renaym for your platform from the{' '}
                 <Link href="/download" className="text-primary hover:underline font-medium">
                   download page
                 </Link>
@@ -205,7 +205,7 @@ export default function DocsPage() {
                 For issues and feature requests, visit our GitHub repository
               </p>
               <a
-                href="https://github.com/paulegradie/Renaym/issues"
+                href="https://github.com/paulegradie/renaym/issues"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-6 py-3 bg-white text-zinc-900 font-semibold rounded-full hover:bg-zinc-100 transition"

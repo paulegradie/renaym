@@ -21,7 +21,7 @@ export default function Footer() {
                   </svg>
                 </div>
               </div>
-              <span className="text-xl font-bold gradient-text">renaym</span>
+              <span className="text-xl font-bold gradient-text">Renaym</span>
             </div>
             <p className="text-zinc-500 text-sm max-w-sm">
               AI-powered media renaming. Intelligent filename parsing meets TMDB metadata for the perfect library.
@@ -72,7 +72,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/paulegradie/renaym/issues/new/choose"
+                  href="https://github.com/paulegradie/Renaym/issues/new/choose"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-500 hover:text-white transition inline-flex items-center gap-1.5"
@@ -87,7 +87,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-white/5 mt-12 pt-8 text-sm text-center text-zinc-600">
-          <p>&copy; {currentYear} renaym. All rights reserved.</p>
+          <p>&copy; {currentYear} Renaym. All rights reserved.</p>
         </div>
       </div>
     </footer>
