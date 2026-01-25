@@ -35,8 +35,8 @@ export default function DocsPage() {
           {/* Getting Started */}
           <DocSection id="getting-started" icon="🚀" title="Getting Started">
             <p className="text-zinc-400 text-lg mb-6">
-              Renaym is an intelligent media file renamer that uses AI-powered parsing and TMDB metadata
-              to help you organize your movie and TV show library.
+              Renaym is a single-file desktop app that intelligently renames your movie and TV show files
+              using AI-powered parsing and TMDB metadata. Download, run, and you&apos;re ready to go.
             </p>
             <div className="glass-card p-6 rounded-xl">
               <h4 className="font-semibold text-white mb-4 flex items-center">
@@ -45,21 +45,25 @@ export default function DocsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 </span>
-                Prerequisites
+                Before You Start
               </h4>
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <span className="text-emerald-400 mr-3 mt-0.5">✓</span>
-                  <span className="text-zinc-300"><strong className="text-white">TMDB API Key</strong> — Get one free at{' '}
+                  <span className="text-zinc-300"><strong className="text-white">Get a free TMDB API Key</strong> — Sign up at{' '}
                     <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                       themoviedb.org
                     </a>
+                    {' '}(takes 2 minutes)
                     <span className="block text-sm text-zinc-500 mt-1">
                       ⚠️ Use the <strong>API Key</strong> (v3 auth), not the &quot;API Read Access Token&quot;
                     </span>
                   </span>
                 </li>
               </ul>
+              <p className="text-zinc-500 text-sm mt-4">
+                💡 The Setup Wizard will prompt you for this key on first launch.
+              </p>
             </div>
           </DocSection>
 
@@ -71,16 +75,41 @@ export default function DocsPage() {
                 <Link href="/download" className="text-primary hover:underline font-medium">
                   download page
                 </Link>
+                {' '}— choose the Installer (recommended) or Portable version
               </StepCard>
-              <StepCard number={2} title="Extract">
-                Extract the downloaded archive to your preferred location
+              <StepCard number={2} title="Install or Extract">
+                Run the installer, or extract the portable zip to any folder
               </StepCard>
               <StepCard number={3} title="Run">
-                Launch the Server application first, then the Client
+                Launch Renaym — the Setup Wizard will guide you through first-time configuration
               </StepCard>
-              <StepCard number={4} title="Configure">
-                Enter your TMDB API key in Settings when prompted
-              </StepCard>
+            </div>
+
+            <div className="mt-6 glass-card p-6 rounded-xl">
+              <h4 className="font-semibold text-white mb-4 flex items-center">
+                <span className="p-2 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg mr-3">
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </span>
+                Setup Wizard (First Run)
+              </h4>
+              <p className="text-zinc-400 mb-4">
+                On first launch, the Setup Wizard will walk you through:
+              </p>
+              <ol className="space-y-3">
+                <li className="flex items-start">
+                  <span className="w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 text-sm flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">1</span>
+                  <span className="text-zinc-300"><strong className="text-white">Download AI Model</strong> — One-time download (~2.3 GB) for intelligent filename parsing</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 text-sm flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">2</span>
+                  <span className="text-zinc-300"><strong className="text-white">Enter TMDB API Key</strong> — Required for movie/TV metadata lookups</span>
+                </li>
+              </ol>
+              <p className="text-zinc-500 text-sm mt-4">
+                That&apos;s it! Once setup is complete, you&apos;re ready to start renaming files.
+              </p>
             </div>
           </DocSection>
 
@@ -181,12 +210,16 @@ export default function DocsPage() {
                 answer="Try adjusting the filename to be clearer, or search manually in TMDB. Sometimes files with unusual naming conventions need manual intervention."
               />
               <TroubleshootCard
-                question="LLM not working?"
-                answer="Download the Phi-3-Mini model and configure the path in settings. The app will automatically fall back to regex parsing if LLM is unavailable."
+                question="AI parsing not working?"
+                answer="Make sure you completed the AI model download during setup. If skipped, the app will use regex-based parsing instead. You can re-run the setup from Settings."
               />
               <TroubleshootCard
-                question="Server won't start?"
-                answer="Ensure no other application is using the required port."
+                question="TMDB lookups failing?"
+                answer="Verify your TMDB API key is correct in Settings. Make sure you're using the API Key (v3 auth), not the 'API Read Access Token'."
+              />
+              <TroubleshootCard
+                question="App won't start?"
+                answer="Try extracting to a different folder. On Windows, avoid protected folders like Program Files unless using the installer."
               />
             </div>
           </DocSection>
