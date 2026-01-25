@@ -132,8 +132,27 @@ export default function DownloadPage() {
           ))}
         </div>
 
+        {/* Security Notice */}
+        <div className="mt-8 p-4 glass-card rounded-xl border border-amber-500/20 bg-amber-500/5">
+          <div className="flex items-start space-x-3">
+            <div className="p-2 bg-amber-500/20 rounded-lg flex-shrink-0">
+              <svg className="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-medium text-amber-300 mb-1">A note about security warnings</h4>
+              <p className="text-zinc-400 text-sm">
+                Renaym is a new product and we haven&apos;t yet set up publisher verification with Microsoft and Apple.
+                You may see warnings from your browser or operating system when downloading or installing.
+                This is normal for new software — you can safely proceed with the download.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Requirements */}
-        <div className="mt-12 p-6 glass-card rounded-2xl">
+        <div className="mt-8 p-6 glass-card rounded-2xl">
           <h3 className="font-semibold text-white mb-4 flex items-center">
             <span className="p-2 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg mr-3">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
