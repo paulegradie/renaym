@@ -52,26 +52,6 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li>
                 <a
-                  href="https://github.com/paulegradie/Renaym"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-zinc-500 hover:text-white transition"
-                >
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/paulegradie/Renaym/releases"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-zinc-500 hover:text-white transition"
-                >
-                  Releases
-                </a>
-              </li>
-              <li>
-                <a
                   href="https://github.com/paulegradie/Renaym/issues/new/choose"
                   target="_blank"
                   rel="noopener noreferrer"

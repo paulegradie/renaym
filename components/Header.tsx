@@ -33,14 +33,6 @@ export default function Header() {
             <NavLink href="/pricing">Pricing</NavLink>
             <NavLink href="/download">Download</NavLink>
             <a
-              href="https://github.com/paulegradie/Renaym"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 text-zinc-400 hover:text-white transition-colors"
-            >
-              GitHub
-            </a>
-            <a
               href="https://github.com/paulegradie/Renaym/issues"
               target="_blank"
               rel="noopener noreferrer"
