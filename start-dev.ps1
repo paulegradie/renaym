@@ -3,7 +3,7 @@
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "🚀 Starting Renaime Website..." -ForegroundColor Cyan
+Write-Host "🚀 Starting Renaym Website..." -ForegroundColor Cyan
 Write-Host ""
 
 # Check if node_modules exists

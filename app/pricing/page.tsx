@@ -72,10 +72,9 @@ export default function PricingPage() {
               'Priority support',
               'All Free features',
             ]}
-            buttonText="Coming Soon"
+            buttonText="Subscribe Now"
             onButtonClick={() => handleCheckout('pro')}
             loading={loading === 'pro'}
-            disabled={true}
           />
 
           {/* Lifetime Tier */}
@@ -90,10 +89,9 @@ export default function PricingPage() {
               'Early access to features',
               'Support development',
             ]}
-            buttonText="Coming Soon"
+            buttonText="Buy Lifetime"
             onButtonClick={() => handleCheckout('lifetime')}
             loading={loading === 'lifetime'}
-            disabled={true}
           />
         </div>
 
@@ -101,7 +99,7 @@ export default function PricingPage() {
           <div className="inline-flex items-center px-6 py-3 rounded-full glass-card">
             <span className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse" />
             <p className="text-zinc-300">
-              <strong className="text-white">Launch Special:</strong> All features are currently free while in beta!
+              <strong className="text-white">14-day free trial</strong> included with all plans. No credit card required to try!
             </p>
           </div>
         </div>

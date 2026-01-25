@@ -33,10 +33,10 @@ This will install Next.js 15.1.6 which fixes the Windows path issues.
 
 ```powershell
 # Copy the entire project to C: drive
-xcopy /E /I G:\code\TheGradieCatalog\Renaime C:\code\Renaime
+xcopy /E /I G:\code\TheGradieCatalog\Renaym C:\code\Renaym
 
 # Navigate to new location
-cd C:\code\Renaime\website-nextjs
+cd C:\code\Renaym\website-nextjs
 
 # Run the site
 npm run dev
@@ -52,7 +52,7 @@ If you have Windows Subsystem for Linux:
 
 ```bash
 # In WSL terminal
-cd /mnt/g/code/TheGradieCatalog/Renaime/website-nextjs
+cd /mnt/g/code/TheGradieCatalog/Renaym/website-nextjs
 npm run dev
 ```
 
@@ -67,7 +67,7 @@ I've already updated your `package.json` to use Next.js 15, so **Option 1** is t
 Just run:
 
 ```powershell
-cd g:\code\TheGradieCatalog\Renaime\website-nextjs
+cd g:\code\TheGradieCatalog\Renaym\website-nextjs
 Remove-Item -Recurse -Force .next, node_modules, package-lock.json
 npm install
 npm run dev
@@ -82,4 +82,3 @@ This will take 3-5 minutes but will fix the issue permanently.
 Next.js 14.2.0 has a bug where it tries to load modules using Windows paths like `G:\...` but Node's ESM loader requires `file://` URLs. Next.js 15 fixes this.
 
 The G: drive specifically triggers this because it's not the system drive (C:).
-

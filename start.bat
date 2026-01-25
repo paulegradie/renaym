@@ -1,6 +1,6 @@
 @echo off
 echo.
-echo Starting Renaime Website...
+echo Starting Renaym Website...
 echo.
 
 cd /d "%~dp0"

@@ -23,14 +23,14 @@ npm install
    - Go to https://dashboard.stripe.com/test/products
    - Click "Add product"
 
-   **Product 1: Renaime Pro**
-   - Name: Renaime Pro
+   **Product 1: Renaym Pro**
+   - Name: Renaym Pro
    - Price: $5
    - Billing: Recurring, monthly
    - Copy the Price ID (starts with `price_`)
 
-   **Product 2: Renaime Lifetime**
-   - Name: Renaime Lifetime
+   **Product 2: Renaym Lifetime**
+   - Name: Renaym Lifetime
    - Price: $35
    - Billing: One-time
    - Copy the Price ID (starts with `price_`)
@@ -143,13 +143,13 @@ To send real emails with license keys:
 
    async function sendLicenseEmail(email: string, licenseKey: string, plan: string) {
      await resend.emails.send({
-       from: "Renaime <noreply@yourdomain.com>",
+       from: "Renaym <noreply@yourdomain.com>",
        to: email,
-       subject: `Your Renaime ${plan} License Key`,
+       subject: `Your Renaym ${plan} License Key`,
        html: `
-         <h1>Thank you for purchasing Renaime!</h1>
+         <h1>Thank you for purchasing Renaym!</h1>
          <p>Your license key: <strong>${licenseKey}</strong></p>
-         <p>To activate, open Renaime and enter this key in Settings.</p>
+         <p>To activate, open Renaym and enter this key in Settings.</p>
        `,
      });
    }

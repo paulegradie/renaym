@@ -98,14 +98,14 @@ async function sendLicenseEmail(email: string, licenseKey: string, plan: string)
   console.log(`
     ===== LICENSE EMAIL =====
     To: ${email}
-    Subject: Your Renaime ${plan} License Key
+    Subject: Your Renaym ${plan} License Key
     
-    Thank you for purchasing Renaime ${plan}!
+    Thank you for purchasing Renaym ${plan}!
     
     Your license key: ${licenseKey}
     
     To activate:
-    1. Open Renaime
+    1. Open Renaym
     2. Go to Settings
     3. Enter your license key
     4. Click Activate
@@ -114,14 +114,14 @@ async function sendLicenseEmail(email: string, licenseKey: string, plan: string)
     ${process.env.NEXT_PUBLIC_URL}/retrieve-license
     
     Thank you for your support!
-    - The Renaime Team
+    - The Renaym Team
     ========================
   `);
 
   // In production, use an email service:
   // await sendEmail({
   //   to: email,
-  //   subject: `Your Renaime ${plan} License Key`,
+  //   subject: `Your Renaym ${plan} License Key`,
   //   html: `...`
   // });
 }

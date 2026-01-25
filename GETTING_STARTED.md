@@ -1,4 +1,4 @@
-# 🚀 Getting Started with Renaime Website
+# 🚀 Getting Started with Renaym Website
 
 ## What You Have
 
@@ -50,8 +50,8 @@ npm install
 1. Create account at https://stripe.com
 2. Get test API keys from https://dashboard.stripe.com/test/apikeys
 3. Create two products:
-   - **Renaime Pro**: $5/month (recurring)
-   - **Renaime Lifetime**: $35 (one-time)
+   - **Renaym Pro**: $5/month (recurring)
+   - **Renaym Lifetime**: $35 (one-time)
 
 ### 3. Configure Environment
 
