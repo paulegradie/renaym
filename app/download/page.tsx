@@ -18,6 +18,7 @@ interface LambdaResponse {
   version?: string;
   client: {
     windows: DownloadInfo | { error: string };
+    'windows-installer': DownloadInfo | { error: string };
     linux: DownloadInfo | { error: string };
     'macos-intel': DownloadInfo | { error: string };
     'macos-arm': DownloadInfo | { error: string };
@@ -28,8 +29,10 @@ interface PlatformDownload {
   platform: string;
   icon: React.ReactNode;
   description: string;
-  platformKey: 'windows' | 'linux' | 'macos-intel' | 'macos-arm';
+  platformKey: 'windows' | 'windows-installer' | 'linux' | 'macos-intel' | 'macos-arm';
   downloadUrl: string | null;
+  recommended?: boolean;
+  secondary?: boolean;
 }
 
 // Helper to check if response has error
@@ -42,7 +45,8 @@ export default function DownloadPage() {
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState<string | null>(null);
   const [platforms, setPlatforms] = useState<PlatformDownload[]>([
-    { platform: "Windows", icon: <WindowsIcon />, description: "Windows 10 or later (64-bit)", platformKey: "windows", downloadUrl: null },
+    { platform: "Windows (Installer)", icon: <WindowsIcon />, description: "Windows 10 or later (64-bit) — Recommended", platformKey: "windows-installer", downloadUrl: null, recommended: true },
+    { platform: "Windows (Portable)", icon: <WindowsIcon />, description: "Windows 10 or later (64-bit) — No installation required", platformKey: "windows", downloadUrl: null, secondary: true },
     { platform: "macOS (Intel)", icon: <AppleIcon />, description: "macOS 11 (Big Sur) or later - Intel Macs", platformKey: "macos-intel", downloadUrl: null },
     { platform: "macOS (Apple Silicon)", icon: <AppleIcon />, description: "macOS 11 (Big Sur) or later - M1/M2/M3 Macs", platformKey: "macos-arm", downloadUrl: null },
     { platform: "Linux", icon: <LinuxIcon />, description: "Ubuntu 20.04+ or equivalent (64-bit)", platformKey: "linux", downloadUrl: null },
@@ -62,10 +66,11 @@ export default function DownloadPage() {
         }
 
         setPlatforms(prev => [
-          { ...prev[0], downloadUrl: hasError(data.client.windows) ? null : data.client.windows.download_url },
-          { ...prev[1], downloadUrl: hasError(data.client['macos-intel']) ? null : data.client['macos-intel'].download_url },
-          { ...prev[2], downloadUrl: hasError(data.client['macos-arm']) ? null : data.client['macos-arm'].download_url },
-          { ...prev[3], downloadUrl: hasError(data.client.linux) ? null : data.client.linux.download_url },
+          { ...prev[0], downloadUrl: hasError(data.client['windows-installer']) ? null : data.client['windows-installer'].download_url },
+          { ...prev[1], downloadUrl: hasError(data.client.windows) ? null : data.client.windows.download_url },
+          { ...prev[2], downloadUrl: hasError(data.client['macos-intel']) ? null : data.client['macos-intel'].download_url },
+          { ...prev[3], downloadUrl: hasError(data.client['macos-arm']) ? null : data.client['macos-arm'].download_url },
+          { ...prev[4], downloadUrl: hasError(data.client.linux) ? null : data.client.linux.download_url },
         ]);
         return true;
       } catch {
@@ -121,6 +126,8 @@ export default function DownloadPage() {
               downloadUrl={platform.downloadUrl}
               loading={loading}
               version={version}
+              recommended={platform.recommended}
+              secondary={platform.secondary}
             />
           ))}
         </div>
@@ -166,17 +173,34 @@ interface PlatformCardProps {
   downloadUrl: string | null;
   loading: boolean;
   version: string | null;
+  recommended?: boolean;
+  secondary?: boolean;
 }
 
-function PlatformCard({ platform, icon, description, downloadUrl, loading, version }: PlatformCardProps) {
+function PlatformCard({ platform, icon, description, downloadUrl, loading, version, recommended, secondary }: PlatformCardProps) {
+  const cardClasses = secondary
+    ? "flex items-center justify-between p-4 glass-card rounded-xl hover:bg-white/[0.06] transition group ml-8 border-l-2 border-zinc-700"
+    : recommended
+      ? "flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group ring-1 ring-purple-500/30"
+      : "flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group";
+
+  const buttonClasses = secondary
+    ? "px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-full transition text-sm font-medium"
+    : "px-5 py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white rounded-full hover:opacity-90 transition text-sm font-medium";
+
   return (
-    <div className="flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group">
+    <div className={cardClasses}>
       <div className="flex items-center space-x-4">
-        <div className="p-3 bg-zinc-800 rounded-xl text-zinc-300 group-hover:text-white transition">
+        <div className={`p-3 rounded-xl text-zinc-300 group-hover:text-white transition ${secondary ? 'bg-zinc-800/50' : 'bg-zinc-800'}`}>
           {icon}
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-white">{platform}</h3>
+          <h3 className={`font-semibold text-white flex items-center gap-2 ${secondary ? 'text-base' : 'text-lg'}`}>
+            {platform}
+            {recommended && (
+              <span className="px-2 py-0.5 text-xs bg-purple-500/20 text-purple-300 rounded-full">Recommended</span>
+            )}
+          </h3>
           <p className="text-zinc-500 text-sm">{description}</p>
         </div>
       </div>
@@ -185,7 +209,7 @@ function PlatformCard({ platform, icon, description, downloadUrl, loading, versi
       ) : downloadUrl ? (
         <a
           href={downloadUrl}
-          className="px-5 py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white rounded-full hover:opacity-90 transition text-sm font-medium"
+          className={buttonClasses}
         >
           Download {version ? `v${version}` : ''}
         </a>
