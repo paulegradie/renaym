@@ -41,7 +41,7 @@ export default function Header() {
               GitHub
             </a>
             <a
-              href="https://github.com/paulegradie/renaym/issues/new/choose"
+              href="https://github.com/paulegradie/Renaym/issues"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 text-zinc-400 hover:text-pink-400 transition-colors inline-flex items-center gap-1.5"
@@ -91,7 +91,7 @@ export default function Header() {
                 GitHub
               </a>
               <a
-                href="https://github.com/paulegradie/renaym/issues/new/choose"
+                href="https://github.com/paulegradie/Renaym/issues"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-3 text-zinc-400 hover:text-pink-400 hover:bg-white/5 rounded-lg transition inline-flex items-center gap-2"
