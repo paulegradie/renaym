@@ -59,10 +59,6 @@ export default function DocsPage() {
                     </span>
                   </span>
                 </li>
-                <li className="flex items-start">
-                  <span className="text-emerald-400 mr-3 mt-0.5">✓</span>
-                  <span className="text-zinc-300"><strong className="text-white">.NET 8 Runtime</strong> — Included in standalone downloads</span>
-                </li>
               </ul>
             </div>
           </DocSection>
@@ -190,7 +186,7 @@ export default function DocsPage() {
               />
               <TroubleshootCard
                 question="Server won't start?"
-                answer="Ensure no other application is using the required port. Check that .NET 8 Runtime is installed if using the framework-dependent version."
+                answer="Ensure no other application is using the required port."
               />
             </div>
           </DocSection>
