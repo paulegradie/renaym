@@ -31,24 +31,82 @@ interface PlatformDownload {
   secondary?: boolean;
 }
 
+type DetectedOS = 'windows' | 'macos' | 'linux' | 'unknown';
+
 // Helper to check if response has error
 const hasError = (item: DownloadInfo | { error: string }): item is { error: string } => {
   return 'error' in item && typeof item.error === 'string' && !('download_url' in item);
 };
 
+// Detect the user's operating system
+const detectOS = (): DetectedOS => {
+  if (typeof window === 'undefined') return 'unknown';
+
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  const platform = window.navigator.platform?.toLowerCase() || '';
+
+  if (platform.includes('win') || userAgent.includes('windows')) {
+    return 'windows';
+  }
+  if (platform.includes('mac') || userAgent.includes('macintosh') || userAgent.includes('mac os')) {
+    return 'macos';
+  }
+  if (platform.includes('linux') || userAgent.includes('linux')) {
+    return 'linux';
+  }
+  return 'unknown';
+};
+
+// Map platform keys to their OS category
+const getPlatformOS = (key: PlatformDownload['platformKey']): DetectedOS => {
+  if (key === 'windows' || key === 'windows-installer') return 'windows';
+  if (key === 'macos-intel' || key === 'macos-arm') return 'macos';
+  if (key === 'linux') return 'linux';
+  return 'unknown';
+};
+
+// Get the appropriate icon for a platform
+const getIconForPlatform = (key: PlatformDownload['platformKey']): React.ReactNode => {
+  if (key === 'windows' || key === 'windows-installer') return <WindowsIcon />;
+  if (key === 'macos-intel' || key === 'macos-arm') return <AppleIcon />;
+  return <LinuxIcon />;
+};
+
+// Get OS display name
+const getOSDisplayName = (os: DetectedOS): string => {
+  switch (os) {
+    case 'windows': return 'Windows';
+    case 'macos': return 'macOS';
+    case 'linux': return 'Linux';
+    default: return 'your system';
+  }
+};
+
+// All platform definitions
+const allPlatforms: Omit<PlatformDownload, 'icon'>[] = [
+  { platform: "Windows (Installer)", description: "Windows 10 or later (64-bit) — Recommended", platformKey: "windows-installer", downloadUrl: null, recommended: true },
+  { platform: "Windows (Portable)", description: "Windows 10 or later (64-bit) — No installation required", platformKey: "windows", downloadUrl: null, secondary: true },
+  { platform: "macOS (Intel)", description: "macOS 11 (Big Sur) or later — Intel Macs", platformKey: "macos-intel", downloadUrl: null },
+  { platform: "macOS (Apple Silicon)", description: "macOS 11 (Big Sur) or later — M1/M2/M3/M4 Macs", platformKey: "macos-arm", downloadUrl: null },
+  { platform: "Linux", description: "Ubuntu 20.04+ or equivalent (64-bit)", platformKey: "linux", downloadUrl: null },
+];
+
 export default function DownloadPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState<string | null>(null);
-  const [platforms, setPlatforms] = useState<PlatformDownload[]>([
-    { platform: "Windows (Installer)", icon: <WindowsIcon />, description: "Windows 10 or later (64-bit) — Recommended", platformKey: "windows-installer", downloadUrl: null, recommended: true },
-    { platform: "Windows (Portable)", icon: <WindowsIcon />, description: "Windows 10 or later (64-bit) — No installation required", platformKey: "windows", downloadUrl: null, secondary: true },
-    { platform: "macOS (Intel)", icon: <AppleIcon />, description: "macOS 11 (Big Sur) or later - Intel Macs", platformKey: "macos-intel", downloadUrl: null },
-    { platform: "macOS (Apple Silicon)", icon: <AppleIcon />, description: "macOS 11 (Big Sur) or later - M1/M2/M3 Macs", platformKey: "macos-arm", downloadUrl: null },
-    { platform: "Linux", icon: <LinuxIcon />, description: "Ubuntu 20.04+ or equivalent (64-bit)", platformKey: "linux", downloadUrl: null },
-  ]);
+  const [detectedOS, setDetectedOS] = useState<DetectedOS>('unknown');
+  const [platforms, setPlatforms] = useState<PlatformDownload[]>(
+    allPlatforms.map(p => ({
+      ...p,
+      icon: getIconForPlatform(p.platformKey),
+    }))
+  );
 
   useEffect(() => {
+    // Detect OS on client side
+    setDetectedOS(detectOS());
+
     const fetchFromLambda = async (): Promise<boolean> => {
       try {
         const response = await fetch(API_ENDPOINTS.downloads);
@@ -85,6 +143,18 @@ export default function DownloadPage() {
     fetchDownloads();
   }, []);
 
+  // Split platforms into detected OS and others
+  const detectedPlatforms = platforms.filter(p => getPlatformOS(p.platformKey) === detectedOS);
+  const otherPlatforms = platforms.filter(p => getPlatformOS(p.platformKey) !== detectedOS);
+
+  // Get subtitle based on detected OS
+  const getSubtitle = () => {
+    if (detectedOS === 'unknown') {
+      return "Choose your platform and get started in seconds";
+    }
+    return `We detected you're on ${getOSDisplayName(detectedOS)}. Here's the perfect download for you.`;
+  };
+
   return (
     <section className="min-h-screen py-20 bg-zinc-950 relative overflow-hidden">
       {/* Background effects */}
@@ -94,7 +164,7 @@ export default function DownloadPage() {
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Download Renaym</h1>
-          <p className="text-xl text-zinc-400">Choose your platform and get started in seconds</p>
+          <p className="text-xl text-zinc-400">{getSubtitle()}</p>
           {version && (
             <p className="mt-4 inline-flex items-center px-4 py-2 rounded-full glass-card text-sm">
               <span className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse" />
@@ -128,33 +198,100 @@ export default function DownloadPage() {
           </div>
         )}
 
-        {/* Platform cards */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-400 mb-4">Available Platforms</h2>
-
-          {platforms.map((platform, index) => (
-            <div key={platform.platformKey}>
-              <PlatformCard
-                platform={platform.platform}
-                icon={platform.icon}
-                description={platform.description}
-                downloadUrl={platform.downloadUrl}
-                loading={loading}
-                version={version}
-                recommended={platform.recommended}
-                secondary={platform.secondary}
-              />
-              {/* Note after Windows (Portable) */}
-              {index === 1 && (
-                <p className="text-xs text-zinc-500 mt-2 ml-8 flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5 text-amber-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Windows may show a security warning — we&apos;re working on verified publishing. Safe to proceed.
-                </p>
-              )}
+        {/* Detected OS Downloads - Featured Section */}
+        {detectedOS !== 'unknown' && detectedPlatforms.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-emerald-300 rounded-full border border-emerald-500/30">
+                ✨ Recommended for you
+              </span>
             </div>
-          ))}
+            <div className="space-y-3">
+              {detectedPlatforms.map((platform) => (
+                <div key={platform.platformKey}>
+                  <PlatformCard
+                    platform={platform.platform}
+                    icon={platform.icon}
+                    description={platform.description}
+                    downloadUrl={platform.downloadUrl}
+                    loading={loading}
+                    version={version}
+                    recommended={!platform.secondary}
+                    secondary={platform.secondary}
+                    featured
+                  />
+                  {/* Windows security note */}
+                  {platform.platformKey === 'windows' && (
+                    <p className="text-xs text-zinc-500 mt-2 ml-8 flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5 text-amber-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Windows may show a security warning — we&apos;re working on verified publishing. Safe to proceed.
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Other Platforms Section */}
+        <div className="space-y-4">
+          <details className={detectedOS !== 'unknown' ? "group" : ""} open={detectedOS === 'unknown'}>
+            <summary className={`flex items-center justify-between cursor-pointer list-none ${detectedOS !== 'unknown' ? 'mb-4' : 'mb-6'}`}>
+              <h2 className="text-lg font-semibold text-zinc-400 flex items-center gap-2">
+                {detectedOS !== 'unknown' ? (
+                  <>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    </svg>
+                    Other Platforms
+                  </>
+                ) : (
+                  'Available Platforms'
+                )}
+              </h2>
+              {detectedOS !== 'unknown' && (
+                <span className="text-zinc-500 text-sm flex items-center gap-1 group-open:rotate-180 transition-transform">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+              )}
+            </summary>
+
+            {detectedOS !== 'unknown' && (
+              <p className="text-sm text-zinc-500 mb-4">
+                Not on {getOSDisplayName(detectedOS)}? Grab Renaym for your other devices.
+              </p>
+            )}
+
+            <div className="space-y-3">
+              {(detectedOS === 'unknown' ? platforms : otherPlatforms).map((platform) => (
+                <div key={platform.platformKey}>
+                  <PlatformCard
+                    platform={platform.platform}
+                    icon={platform.icon}
+                    description={platform.description}
+                    downloadUrl={platform.downloadUrl}
+                    loading={loading}
+                    version={version}
+                    recommended={detectedOS === 'unknown' && platform.recommended}
+                    secondary={platform.secondary}
+                  />
+                  {/* Windows security note for fallback */}
+                  {detectedOS === 'unknown' && platform.platformKey === 'windows' && (
+                    <p className="text-xs text-zinc-500 mt-2 ml-8 flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5 text-amber-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Windows may show a security warning — we&apos;re working on verified publishing. Safe to proceed.
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </details>
         </div>
 
         {/* Requirements */}
@@ -200,33 +337,52 @@ interface PlatformCardProps {
   version: string | null;
   recommended?: boolean;
   secondary?: boolean;
+  featured?: boolean;
 }
 
-function PlatformCard({ platform, icon, description, downloadUrl, loading, version, recommended, secondary }: PlatformCardProps) {
-  const cardClasses = secondary
-    ? "flex items-center justify-between p-4 glass-card rounded-xl hover:bg-white/[0.06] transition group ml-8 border-l-2 border-zinc-700"
-    : recommended
-      ? "flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group ring-1 ring-purple-500/30"
-      : "flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group";
+function PlatformCard({ platform, icon, description, downloadUrl, loading, version, recommended, secondary, featured }: PlatformCardProps) {
+  const getCardClasses = () => {
+    if (secondary) {
+      return "flex items-center justify-between p-4 glass-card rounded-xl hover:bg-white/[0.06] transition group ml-8 border-l-2 border-zinc-700";
+    }
+    if (featured && recommended) {
+      return "flex items-center justify-between p-6 glass-card rounded-xl hover:bg-white/[0.06] transition group ring-2 ring-emerald-500/40 bg-emerald-500/5";
+    }
+    if (recommended) {
+      return "flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group ring-1 ring-purple-500/30";
+    }
+    return "flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group";
+  };
 
-  const buttonClasses = secondary
-    ? "px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-full transition text-sm font-medium"
-    : "px-5 py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white rounded-full hover:opacity-90 transition text-sm font-medium";
+  const getButtonClasses = () => {
+    if (secondary) {
+      return "px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-full transition text-sm font-medium";
+    }
+    if (featured && recommended) {
+      return "px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white rounded-full hover:opacity-90 transition font-medium shadow-lg shadow-emerald-500/25";
+    }
+    return "px-5 py-2.5 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white rounded-full hover:opacity-90 transition text-sm font-medium";
+  };
 
   return (
-    <div className={cardClasses}>
+    <div className={getCardClasses()}>
       <div className="flex items-center space-x-4">
-        <div className={`p-3 rounded-xl text-zinc-300 group-hover:text-white transition ${secondary ? 'bg-zinc-800/50' : 'bg-zinc-800'}`}>
+        <div className={`p-3 rounded-xl text-zinc-300 group-hover:text-white transition ${featured && recommended ? 'bg-emerald-500/20' : secondary ? 'bg-zinc-800/50' : 'bg-zinc-800'
+          }`}>
           {icon}
         </div>
         <div>
-          <h3 className={`font-semibold text-white flex items-center gap-2 ${secondary ? 'text-base' : 'text-lg'}`}>
+          <h3 className={`font-semibold text-white flex items-center gap-2 ${featured && recommended ? 'text-xl' : secondary ? 'text-base' : 'text-lg'
+            }`}>
             {platform}
-            {recommended && (
+            {featured && recommended && (
+              <span className="px-2 py-0.5 text-xs bg-emerald-500/20 text-emerald-300 rounded-full border border-emerald-500/30">Best Match</span>
+            )}
+            {!featured && recommended && (
               <span className="px-2 py-0.5 text-xs bg-purple-500/20 text-purple-300 rounded-full">Recommended</span>
             )}
           </h3>
-          <p className="text-zinc-500 text-sm">{description}</p>
+          <p className={`text-zinc-500 ${featured && recommended ? 'text-base mt-1' : 'text-sm'}`}>{description}</p>
         </div>
       </div>
       {loading ? (
@@ -234,7 +390,7 @@ function PlatformCard({ platform, icon, description, downloadUrl, loading, versi
       ) : downloadUrl ? (
         <a
           href={downloadUrl}
-          className={buttonClasses}
+          className={getButtonClasses()}
         >
           Download {version ? `v${version}` : ''}
         </a>
