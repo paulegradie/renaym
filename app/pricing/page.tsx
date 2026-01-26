@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { API_ENDPOINTS } from '@/lib/config';
 
 export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null);
@@ -10,20 +11,26 @@ export default function PricingPage() {
     setLoading(plan);
 
     try {
-      const response = await fetch('/api/stripe/checkout', {
+      const response = await fetch(API_ENDPOINTS.stripeCheckout, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan }),
       });
 
-      const { url } = await response.json();
+      const data = await response.json();
 
-      if (url) {
-        window.location.href = url;
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL returned');
       }
     } catch (error) {
       console.error('Checkout error:', error);
-      alert('Failed to start checkout. Please try again.');
+      alert(error instanceof Error ? error.message : 'Failed to start checkout. Please try again.');
     } finally {
       setLoading(null);
     }

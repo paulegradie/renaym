@@ -1,11 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
-// Lambda API endpoint for S3 downloads
-const DOWNLOADS_API_URL = process.env.NEXT_PUBLIC_API_URL
-  ? `${process.env.NEXT_PUBLIC_API_URL}/api/downloads`
-  : "https://your-api-gateway.amazonaws.com/api/downloads";
+import { API_ENDPOINTS } from '@/lib/config';
 
 interface DownloadInfo {
   filename: string;
@@ -55,7 +51,7 @@ export default function DownloadPage() {
   useEffect(() => {
     const fetchFromLambda = async (): Promise<boolean> => {
       try {
-        const response = await fetch(DOWNLOADS_API_URL);
+        const response = await fetch(API_ENDPOINTS.downloads);
         if (!response.ok) {
           return false;
         }

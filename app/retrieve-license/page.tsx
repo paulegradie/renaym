@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { API_ENDPOINTS } from '@/lib/config';
 
 interface LicenseInfo {
   licenseKey: string;
@@ -25,7 +26,7 @@ export default function RetrieveLicensePage() {
     setError('');
 
     try {
-      const response = await fetch('/api/request-verification-code', {
+      const response = await fetch(API_ENDPOINTS.requestVerificationCode, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -50,7 +51,7 @@ export default function RetrieveLicensePage() {
     setError('');
 
     try {
-      const response = await fetch('/api/retrieve-license', {
+      const response = await fetch(API_ENDPOINTS.retrieveLicense, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, verificationCode }),
@@ -77,7 +78,7 @@ export default function RetrieveLicensePage() {
     setVerificationCode('');
 
     try {
-      const response = await fetch('/api/request-verification-code', {
+      const response = await fetch(API_ENDPOINTS.requestVerificationCode, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
