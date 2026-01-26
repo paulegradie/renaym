@@ -1,230 +1,102 @@
-# renaym Website
+# Renaym Website
 
-Next.js website for renaym with Stripe integration for license sales.
+The official website for [Renaym](https://renaym.com) — an AI-powered media file renaming tool.
 
-## Features
+## Overview
 
-- ✅ Beautiful, responsive design (converted from Jekyll)
-- ✅ Stripe checkout integration
-- ✅ Automatic license key generation
-- ✅ License retrieval by email
-- ✅ No database required (uses Stripe metadata)
-- ✅ Ready for Vercel deployment (free tier)
+This repository contains the source code for the Renaym marketing website and e-commerce platform. The site is built with Next.js and deployed as a static site to GitHub Pages, with a serverless backend on AWS for payment processing.
 
-## Quick Start
+## Tech Stack
 
-### 1. Install Dependencies
+- **Framework**: [Next.js 15](https://nextjs.org/) with App Router
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Payments**: [Stripe](https://stripe.com/)
+- **Hosting**: GitHub Pages (static export)
+- **Backend**: AWS Lambda + API Gateway
 
-```bash
-npm install
-```
-
-### 2. Configure Environment Variables
-
-Copy `.env.example` to `.env.local`:
-
-```bash
-cp .env.example .env.local
-```
-
-Edit `.env.local` and add your Stripe keys:
-
-```env
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-STRIPE_PRICE_ID_PRO=price_...
-STRIPE_PRICE_ID_LIFETIME=price_...
-NEXT_PUBLIC_URL=http://localhost:3000
-```
-
-### 3. Run Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
-## Stripe Setup
-
-### 1. Create Products in Stripe Dashboard
-
-1. Go to [Stripe Dashboard](https://dashboard.stripe.com/test/products)
-2. Create two products:
-   - **renaym Pro** - $5/month (recurring)
-   - **renaym Lifetime** - $35 (one-time)
-3. Copy the Price IDs to your `.env.local`
-
-### 2. Set Up Webhook
-
-1. Go to [Stripe Webhooks](https://dashboard.stripe.com/test/webhooks)
-2. Click "Add endpoint"
-3. URL: `https://your-domain.com/api/stripe/webhook`
-4. Events to listen for:
-   - `checkout.session.completed`
-5. Copy the webhook secret to `.env.local`
-
-### 3. Test Locally with Stripe CLI
-
-```bash
-# Install Stripe CLI
-# https://stripe.com/docs/stripe-cli
-
-# Login
-stripe login
-
-# Forward webhooks to local server
-stripe listen --forward-to localhost:3000/api/stripe/webhook
-
-# Use the webhook secret from the CLI output in .env.local
-```
-
-## How It Works
-
-### Purchase Flow
-
-1. User clicks "Buy Pro" on pricing page
-2. Redirected to Stripe Checkout
-3. After payment, Stripe webhook fires
-4. Webhook handler:
-   - Generates license key
-   - Stores in Stripe customer metadata
-   - Sends email to customer (TODO: integrate email service)
-5. User receives license key via email
-
-### License Retrieval
-
-1. User visits `/retrieve-license`
-2. Enters email address
-3. System queries Stripe for customer
-4. Returns license key from metadata
-
-### No Database!
-
-All data is stored in Stripe:
-
-- Customer email
-- License key
-- Plan type
-- Issue/expiry dates
-
-This means:
-
-- ✅ Zero database costs
-- ✅ Zero database maintenance
-- ✅ Stripe handles backups
-- ✅ Simple architecture
-
-## Deployment
-
-### Deploy to Vercel (Recommended - Free)
-
-1. Push code to GitHub
-2. Go to [Vercel](https://vercel.com)
-3. Import your repository
-4. Add environment variables in Vercel dashboard
-5. Deploy!
-
-Vercel will:
-
-- Auto-deploy on git push
-- Provide free SSL
-- Handle serverless functions
-- Give you a production URL
-
-### Environment Variables in Vercel
-
-Add these in Vercel Dashboard → Settings → Environment Variables:
+## Architecture
 
 ```
-STRIPE_SECRET_KEY
-STRIPE_PUBLISHABLE_KEY
-STRIPE_WEBHOOK_SECRET
-STRIPE_PRICE_ID_PRO
-STRIPE_PRICE_ID_LIFETIME
-NEXT_PUBLIC_URL (your Vercel URL)
+GitHub Pages (Static Site)
+    ↓ API calls
+API Gateway
+    ↓
+Lambda Functions
+    ↓
+Stripe API
 ```
 
-### Update Stripe Webhook
+The website uses a hybrid architecture:
 
-After deployment, update your Stripe webhook URL to:
+- **Frontend**: Static Next.js site exported and hosted on GitHub Pages
+- **Backend**: AWS Lambda functions handle Stripe checkout, webhooks, and license retrieval
 
-```
-https://your-vercel-domain.vercel.app/api/stripe/webhook
-```
+## Local Development
 
-## Email Integration (TODO)
+### Prerequisites
 
-Currently, license keys are logged to console. To send real emails:
+- Node.js 20+
+- npm
 
-1. Choose an email service:
-   - [Resend](https://resend.com) - 3,000 emails/month free
-   - [SendGrid](https://sendgrid.com) - 100 emails/day free
-   - [Mailgun](https://www.mailgun.com) - 5,000 emails/month free
+### Setup
 
-2. Install SDK:
+1. **Install dependencies**
 
-```bash
-npm install resend
-# or
-npm install @sendgrid/mail
-```
+   ```bash
+   npm install
+   ```
 
-3. Update `app/api/stripe/webhook/route.ts`:
+2. **Configure environment variables**
 
-```typescript
-import { Resend } from "resend";
-const resend = new Resend(process.env.RESEND_API_KEY);
+   Create a `.env.local` file with your development keys:
 
-await resend.emails.send({
-  from: "renaym <noreply@yourdomain.com>",
-  to: email,
-  subject: `Your renaym ${plan} License Key`,
-  html: `<p>Your license key: <strong>${licenseKey}</strong></p>`,
-});
-```
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:3001
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+   ```
+
+3. **Start the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000)
 
 ## Project Structure
 
 ```
-website-nextjs/
-├── app/
-│   ├── api/
-│   │   ├── stripe/
-│   │   │   ├── checkout/route.ts    # Create checkout session
-│   │   │   └── webhook/route.ts     # Handle payment success
-│   │   └── retrieve-license/route.ts # Retrieve license by email
-│   ├── pricing/page.tsx              # Pricing page with buy buttons
-│   ├── retrieve-license/page.tsx     # License retrieval form
-│   ├── success/page.tsx              # Post-purchase success page
-│   ├── download/page.tsx             # Download page
-│   ├── docs/page.tsx                 # Documentation
-│   ├── page.tsx                      # Home page
-│   ├── layout.tsx                    # Root layout
-│   └── globals.css                   # Global styles
-├── components/
-│   ├── Header.tsx                    # Navigation header
-│   └── Footer.tsx                    # Footer
-├── lib/
-│   └── license.ts                    # License key generation
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx            # Home page
+│   ├── pricing/            # Pricing page
+│   ├── download/           # Download page
+│   ├── docs/               # Documentation
+│   ├── retrieve-license/   # License retrieval
+│   └── success/            # Post-purchase page
+├── components/             # Reusable UI components
+├── lib/                    # Utility functions
+├── public/                 # Static assets
 └── package.json
 ```
 
-## License Key Format
+## Deployment
 
-Simple format (current):
+The site is automatically deployed via GitHub Actions:
 
-```
-RENAYM-XXXXX-XXXXX-XXXXX-XXXXX
-```
+1. Push to `main` triggers the deployment workflow
+2. Next.js builds and exports to static HTML
+3. Static files are deployed to GitHub Pages
+4. AWS Lambda backend is deployed separately via Terraform
 
-Signed format (optional, requires RSA keys):
+See the deployment documentation in the main repository for full details.
 
-```
-base64(payload).base64(signature)
-```
+## Related Documentation
 
-## Support
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - Detailed architecture overview
+- [DOMAIN_SETUP.md](./DOMAIN_SETUP.md) - Custom domain configuration
 
-For issues, see the main [renaym repository](https://github.com/paulegradie/renaym).
+## License
+
+Copyright © 2024-2026 Renaym. All rights reserved.
+
+This is proprietary software. See [LICENSE](./LICENSE) for details.
