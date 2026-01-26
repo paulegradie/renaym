@@ -37,8 +37,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Reassemble license key if it was split due to Stripe's 500 char limit
+    const fullLicenseKey = metadata.license_key + (metadata.license_key_2 || '');
+
     return NextResponse.json({
-      licenseKey: metadata.license_key,
+      licenseKey: fullLicenseKey,
       plan: metadata.plan,
       issuedAt: metadata.issued_at,
       expiresAt: metadata.expires_at === 'lifetime' ? null : metadata.expires_at,

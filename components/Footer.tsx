@@ -51,6 +51,11 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Resources</h3>
             <ul className="space-y-3 text-sm">
               <li>
+                <Link href="/retrieve-license" className="text-zinc-500 hover:text-white transition">
+                  Retrieve License
+                </Link>
+              </li>
+              <li>
                 <a
                   href="https://github.com/paulegradie/Renaym/issues/new/choose"
                   target="_blank"
