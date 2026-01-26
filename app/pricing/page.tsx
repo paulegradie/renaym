@@ -7,7 +7,7 @@ import { API_ENDPOINTS } from '@/lib/config';
 export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null);
 
-  const handleCheckout = async (plan: 'pro' | 'lifetime') => {
+  const handleCheckout = async (plan: 'annual' | '2year' | 'lifetime') => {
     setLoading(plan);
 
     try {
@@ -48,7 +48,7 @@ export default function PricingPage() {
           <p className="text-xl text-zinc-400">Choose the plan that works for you</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {/* Free Tier */}
           <PricingCard
             name="Free"
@@ -65,23 +65,39 @@ export default function PricingPage() {
             buttonHref="/download"
           />
 
-          {/* Pro Tier */}
+          {/* Annual Tier */}
           <PricingCard
-            name="Pro"
+            name="Annual"
             description="For serious media collectors"
-            price="$10"
+            price="$12"
             period="/year"
-            popular
             features={[
               'Unlimited files',
               'AI-powered parsing (LLM)',
               'Custom naming templates',
               'Priority support',
-              'All Free features',
             ]}
-            buttonText="Subscribe Now"
-            onButtonClick={() => handleCheckout('pro')}
-            loading={loading === 'pro'}
+            buttonText="Subscribe"
+            onButtonClick={() => handleCheckout('annual')}
+            loading={loading === 'annual'}
+          />
+
+          {/* 2-Year Tier */}
+          <PricingCard
+            name="2-Year"
+            description="Best value for committed users"
+            price="$20"
+            period="/2 years"
+            popular
+            badge="Save 17%"
+            features={[
+              'Everything in Annual',
+              'Save $4 vs annual billing',
+              'Lock in your price',
+            ]}
+            buttonText="Subscribe"
+            onButtonClick={() => handleCheckout('2year')}
+            loading={loading === '2year'}
           />
 
           {/* Lifetime Tier */}
@@ -91,9 +107,9 @@ export default function PricingPage() {
             price="$35"
             period="/once"
             features={[
-              'Everything in Pro',
+              'Everything in Annual',
               'Lifetime updates',
-              'Early access to features',
+              'Pays for itself in ~3 years',
               'Support development',
             ]}
             buttonText="Buy Lifetime"
@@ -125,6 +141,7 @@ interface PricingCardProps {
   buttonHref?: string;
   onButtonClick?: () => void;
   popular?: boolean;
+  badge?: string;
   loading?: boolean;
   disabled?: boolean;
 }
@@ -139,6 +156,7 @@ function PricingCard({
   buttonHref,
   onButtonClick,
   popular,
+  badge,
   loading,
   disabled,
 }: PricingCardProps) {
@@ -146,7 +164,7 @@ function PricingCard({
     <div className={`relative rounded-2xl p-8 ${popular ? 'glass-card border-purple-500/50' : 'glass-card'}`}>
       {popular && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-          Most Popular
+          {badge || 'Most Popular'}
         </div>
       )}
       <h3 className="text-lg font-semibold text-white mb-2">{name}</h3>

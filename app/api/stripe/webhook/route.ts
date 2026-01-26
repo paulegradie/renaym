@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
 async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
   const customerEmail = session.customer_email || session.customer_details?.email;
-  const plan = session.metadata?.plan as 'pro' | 'lifetime';
+  const plan = session.metadata?.plan as 'annual' | '2year' | 'lifetime';
 
   if (!customerEmail || !plan) {
     console.error('Missing customer email or plan in session:', session.id);

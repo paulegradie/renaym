@@ -1,8 +1,10 @@
 import crypto from 'crypto';
 
+export type PlanType = 'annual' | '2year' | 'lifetime';
+
 export interface LicenseData {
   email: string;
-  plan: 'pro' | 'lifetime';
+  plan: PlanType;
   issuedAt: string;
   expiresAt?: string; // undefined for lifetime
 }
@@ -60,15 +62,19 @@ export function isValidLicenseKeyFormat(key: string): boolean {
 }
 
 /**
- * Calculate expiry date for pro plan (1 year from now)
+ * Calculate expiry date based on plan type
+ * - annual: 1 year from now
+ * - 2year: 2 years from now
+ * - lifetime: no expiry (undefined)
  */
-export function calculateExpiryDate(plan: 'pro' | 'lifetime'): string | undefined {
+export function calculateExpiryDate(plan: PlanType): string | undefined {
   if (plan === 'lifetime') {
     return undefined;
   }
 
   const now = new Date();
-  const expiry = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+  const yearsToAdd = plan === '2year' ? 2 : 1;
+  const expiry = new Date(now.getFullYear() + yearsToAdd, now.getMonth(), now.getDate());
   return expiry.toISOString();
 }
 

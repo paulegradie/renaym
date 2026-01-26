@@ -7,17 +7,26 @@ export async function POST(req: NextRequest) {
   try {
     const { plan } = await req.json();
 
-    if (!plan || !['pro', 'lifetime'].includes(plan)) {
+    if (!plan || !['annual', '2year', 'lifetime'].includes(plan)) {
       return NextResponse.json(
         { error: 'Invalid plan' },
         { status: 400 }
       );
     }
 
-    // Get the price ID from environment variables
-    const priceId = plan === 'pro'
-      ? process.env.STRIPE_PRICE_ID_PRO
-      : process.env.STRIPE_PRICE_ID_LIFETIME;
+    // Get the price ID from environment variables based on plan
+    let priceId: string | undefined;
+    switch (plan) {
+      case 'annual':
+        priceId = process.env.STRIPE_PRICE_ID_ANNUAL;
+        break;
+      case '2year':
+        priceId = process.env.STRIPE_PRICE_ID_2YEAR;
+        break;
+      case 'lifetime':
+        priceId = process.env.STRIPE_PRICE_ID_LIFETIME;
+        break;
+    }
 
     if (!priceId) {
       return NextResponse.json(
@@ -27,8 +36,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Create Stripe checkout session
+    // Lifetime is a one-time payment, annual and 2year are subscriptions
     const session = await stripe.checkout.sessions.create({
-      mode: plan === 'pro' ? 'subscription' : 'payment',
+      mode: plan === 'lifetime' ? 'payment' : 'subscription',
       line_items: [
         {
           price: priceId,
