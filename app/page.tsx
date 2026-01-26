@@ -14,7 +14,7 @@ export default function Home() {
           {/* Alpha Badge */}
           <div className="inline-flex items-center px-4 py-2 rounded-full glass-card text-sm text-zinc-300 mb-8 border border-amber-500/30 bg-amber-500/5">
             <span className="w-2 h-2 bg-amber-400 rounded-full mr-2 animate-pulse" />
-            Alpha — Actively shipping updates
+            Alpha — Actively shipping updates (to the site as well)
           </div>
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight">
@@ -24,8 +24,9 @@ export default function Home() {
           </h1>
 
           <p className="text-xl md:text-2xl text-zinc-400 mb-10 max-w-3xl mx-auto leading-relaxed">
-            AI-powered filename parsing meets TMDB metadata.
+            <span>AI-powered filename parsing meets TMDB metadata.</span>
             <span className="text-zinc-300"> Organize your entire media library in minutes.</span>
+
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
