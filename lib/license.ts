@@ -77,4 +77,3 @@ export function calculateExpiryDate(plan: PlanType): string | undefined {
   const expiry = new Date(now.getFullYear() + yearsToAdd, now.getMonth(), now.getDate());
   return expiry.toISOString();
 }
-
