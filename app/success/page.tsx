@@ -31,6 +31,10 @@ export default function SuccessPage() {
                 <p className="text-zinc-400 text-sm">
                   Your license key has been sent to your email address. It may take a few minutes to arrive.
                 </p>
+                <p className="text-amber-400/90 text-sm mt-2 flex items-start">
+                  <span className="mr-1.5">⚠️</span>
+                  <span><strong>Important:</strong> Check your spam/junk folder! Our emails often end up there.</span>
+                </p>
               </div>
             </div>
 
@@ -73,7 +77,7 @@ export default function SuccessPage() {
 
         <div className="mt-8 p-4 glass-card rounded-xl">
           <p className="text-sm text-zinc-400">
-            <strong className="text-zinc-300">Lost your email?</strong> You can retrieve your license key anytime using your email address.
+            <strong className="text-zinc-300">Can't find the email?</strong> Check your spam/junk folder first. If it's still not there, you can retrieve your license key anytime using the button above.
           </p>
         </div>
       </div>

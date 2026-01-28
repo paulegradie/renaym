@@ -182,6 +182,9 @@ export default function RetrieveLicensePage() {
                 <p className="text-zinc-400">
                   We sent a 6-digit code to <strong className="text-white">{email}</strong>
                 </p>
+                <p className="text-amber-400/90 text-sm mt-2">
+                  ⚠️ Check your spam/junk folder — our emails often end up there!
+                </p>
               </div>
 
               <div>

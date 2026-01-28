@@ -11,10 +11,10 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-          {/* Alpha Badge */}
-          <div className="inline-flex items-center px-4 py-2 rounded-full glass-card text-sm text-zinc-300 mb-8 border border-amber-500/30 bg-amber-500/5">
-            <span className="w-2 h-2 bg-amber-400 rounded-full mr-2 animate-pulse" />
-            Alpha — Actively shipping updates (to the site as well)
+          {/* Beta Badge */}
+          <div className="inline-flex items-center px-4 py-2 rounded-full glass-card text-sm text-zinc-300 mb-8 border border-cyan-500/30 bg-cyan-500/5">
+            <span className="w-2 h-2 bg-cyan-400 rounded-full mr-2 animate-pulse" />
+            Beta — Now available for testing
           </div>
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight">
