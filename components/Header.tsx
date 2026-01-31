@@ -29,6 +29,7 @@ export default function Header() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             <NavLink href="/">Home</NavLink>
+            {/* <NavLink href="/demo">Demo</NavLink> */}
             <NavLink href="/docs">Docs</NavLink>
             <NavLink href="/pricing">Pricing</NavLink>
             <NavLink href="/download">Download</NavLink>
@@ -71,6 +72,7 @@ export default function Header() {
           <div className="md:hidden py-4 border-t border-white/5">
             <div className="flex flex-col space-y-2">
               <MobileNavLink href="/" onClick={() => setMobileMenuOpen(false)}>Home</MobileNavLink>
+              {/* <MobileNavLink href="/demo" onClick={() => setMobileMenuOpen(false)}>Demo</MobileNavLink> */}
               <MobileNavLink href="/docs" onClick={() => setMobileMenuOpen(false)}>Docs</MobileNavLink>
               <MobileNavLink href="/pricing" onClick={() => setMobileMenuOpen(false)}>Pricing</MobileNavLink>
               <MobileNavLink href="/download" onClick={() => setMobileMenuOpen(false)}>Download</MobileNavLink>

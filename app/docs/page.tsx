@@ -51,7 +51,7 @@ export default function DocsPage() {
                 <li className="flex items-start">
                   <span className="text-emerald-400 mr-3 mt-0.5">✓</span>
                   <span className="text-zinc-300"><strong className="text-white">Get a free TMDB API Key</strong> — Sign up at{' '}
-                    <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                    <a href="https://www.themoviedb.org/signup" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                       themoviedb.org
                     </a>
                     {' '}(takes 2 minutes)
