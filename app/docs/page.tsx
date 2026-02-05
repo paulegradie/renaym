@@ -85,6 +85,32 @@ export default function DocsPage() {
               </StepCard>
             </div>
 
+            {/* Platform-specific guide link */}
+            <Link
+              href="/docs/install"
+              className="mt-6 flex items-center justify-between p-5 glass-card rounded-xl hover:bg-white/[0.06] transition group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white flex items-center gap-2">
+                    Platform-Specific Installation Guide
+                    <span className="px-2 py-0.5 text-xs bg-gradient-to-r from-pink-500/20 to-cyan-500/20 text-pink-300 rounded-full border border-pink-500/30">
+                      Detailed
+                    </span>
+                  </h4>
+                  <p className="text-zinc-400 text-sm">Step-by-step instructions for Windows, macOS, and Linux with security tips</p>
+                </div>
+              </div>
+              <svg className="w-5 h-5 text-zinc-400 group-hover:text-white group-hover:translate-x-1 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+
             <div className="mt-6 glass-card p-6 rounded-xl">
               <h4 className="font-semibold text-white mb-4 flex items-center">
                 <span className="p-2 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg mr-3">

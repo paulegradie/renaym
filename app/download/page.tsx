@@ -174,31 +174,34 @@ export default function DownloadPage() {
         </div>
 
         {/* Security & Trust Notice */}
-        <div className="mb-8 p-5 glass-card rounded-xl border border-cyan-500/20 bg-cyan-500/5">
+        <div className="mb-8 p-5 glass-card rounded-xl border border-amber-500/20 bg-amber-500/5">
           <div className="flex items-start gap-4">
-            <div className="p-2.5 bg-cyan-500/20 rounded-lg flex-shrink-0">
-              <svg className="w-6 h-6 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+            <div className="p-2.5 bg-amber-500/20 rounded-lg flex-shrink-0">
+              <svg className="w-6 h-6 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" />
               </svg>
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-cyan-300 mb-2 text-base">Safe & Trustworthy Software</h4>
+              <h4 className="font-semibold text-amber-300 mb-2 text-base">Security Warnings Expected — Here&apos;s Why</h4>
+              <p className="text-sm text-zinc-400 mb-3">
+                Renaym is independent, free software. We&apos;re working toward official code signing, but for now you may see security warnings. <strong className="text-zinc-300">This is completely safe</strong> — we just want to help you organize your media files!
+              </p>
               <div className="space-y-2 text-sm text-zinc-400">
                 <div className="flex items-start gap-2">
-                  <svg className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
-                  <span><strong className="text-zinc-300">macOS:</strong> Fully code-signed and notarized by Apple — no warnings!</span>
+                  <span><strong className="text-zinc-300">Windows:</strong> SmartScreen warning — Click &quot;More info&quot; → &quot;Run anyway&quot;</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
-                  <span><strong className="text-zinc-300">Windows:</strong> May show SmartScreen warning (normal for new publishers). Click &quot;More info&quot; → &quot;Run anyway&quot;</span>
+                  <span><strong className="text-zinc-300">macOS:</strong> Gatekeeper warning — Right-click → &quot;Open&quot;, or allow in System Settings → Privacy &amp; Security</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <svg className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                   <span><strong className="text-zinc-300">Privacy:</strong> AI runs 100% locally. No data sent to cloud. No tracking. Open development on GitHub.</span>
                 </div>
@@ -251,13 +254,13 @@ export default function DownloadPage() {
                   )}
                   {/* macOS security note */}
                   {(platform.platformKey === 'macos-intel' || platform.platformKey === 'macos-arm') && (
-                    <div className="mt-3 ml-8 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
-                      <p className="text-xs text-emerald-300/90 flex items-start gap-2">
-                        <svg className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    <div className="mt-3 ml-8 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                      <p className="text-xs text-amber-300/90 flex items-start gap-2">
+                        <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <span>
-                          <strong className="text-emerald-300">Fully code-signed & notarized by Apple.</strong> No security warnings — installs smoothly!
+                          <strong className="text-amber-300">macOS Gatekeeper warning expected.</strong> Right-click the app → &quot;Open&quot;, or allow in System Settings → Privacy &amp; Security. This is safe — we&apos;re working on Apple certification.
                         </span>
                       </p>
                     </div>
@@ -355,6 +358,25 @@ export default function DownloadPage() {
               Activate your license key (received via email after purchase)
             </li>
           </ol>
+
+          {/* Link to detailed installation guide */}
+          <div className="mt-6 pt-5 border-t border-white/10">
+            <a
+              href="/docs/install"
+              className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border border-purple-500/20 hover:border-purple-500/40 transition group"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">📖</span>
+                <div>
+                  <h4 className="font-medium text-white">Need detailed instructions?</h4>
+                  <p className="text-sm text-zinc-400">View our platform-specific installation guide</p>
+                </div>
+              </div>
+              <svg className="w-5 h-5 text-zinc-400 group-hover:text-white group-hover:translate-x-1 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </section>
