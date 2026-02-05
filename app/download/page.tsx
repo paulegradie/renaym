@@ -226,47 +226,46 @@ export default function DownloadPage() {
             </div>
             <div className="space-y-3">
               {detectedPlatforms.map((platform) => (
-                <div key={platform.platformKey}>
-                  <PlatformCard
-                    platform={platform.platform}
-                    icon={platform.icon}
-                    description={platform.description}
-                    downloadUrl={platform.downloadUrl}
-                    loading={loading}
-                    version={version}
-                    recommended={!platform.secondary}
-                    secondary={platform.secondary}
-                    featured
-                  />
-                  {/* Windows security note */}
-                  {(platform.platformKey === 'windows' || platform.platformKey === 'windows-installer') && (
-                    <div className="mt-3 ml-8 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
-                      <p className="text-xs text-amber-300/90 flex items-start gap-2">
-                        <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>
-                          <strong className="text-amber-300">Windows SmartScreen warning expected.</strong> As a new publisher, Windows will show a security warning.
-                          Click &quot;More info&quot; → &quot;Run anyway&quot; to install. This is safe — we&apos;re working on verified code signing.
-                        </span>
-                      </p>
-                    </div>
-                  )}
-                  {/* macOS security note */}
-                  {(platform.platformKey === 'macos-intel' || platform.platformKey === 'macos-arm') && (
-                    <div className="mt-3 ml-8 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
-                      <p className="text-xs text-amber-300/90 flex items-start gap-2">
-                        <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>
-                          <strong className="text-amber-300">macOS Gatekeeper warning expected.</strong> Right-click the app → &quot;Open&quot;, or allow in System Settings → Privacy &amp; Security. This is safe — we&apos;re working on Apple certification.
-                        </span>
-                      </p>
-                    </div>
-                  )}
-                </div>
+                <PlatformCard
+                  key={platform.platformKey}
+                  platform={platform.platform}
+                  icon={platform.icon}
+                  description={platform.description}
+                  downloadUrl={platform.downloadUrl}
+                  loading={loading}
+                  version={version}
+                  recommended={!platform.secondary}
+                  secondary={platform.secondary}
+                  featured
+                />
               ))}
+              {/* Windows security note - shown once for all Windows downloads */}
+              {detectedOS === 'windows' && (
+                <div className="mt-3 ml-8 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                  <p className="text-xs text-amber-300/90 flex items-start gap-2">
+                    <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>
+                      <strong className="text-amber-300">Windows SmartScreen warning expected.</strong> As a new publisher, Windows will show a security warning.
+                      Click &quot;More info&quot; → &quot;Run anyway&quot; to install. This is safe — we&apos;re working on verified code signing.
+                    </span>
+                  </p>
+                </div>
+              )}
+              {/* macOS security note - shown once for all macOS downloads */}
+              {detectedOS === 'macos' && (
+                <div className="mt-3 ml-8 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                  <p className="text-xs text-amber-300/90 flex items-start gap-2">
+                    <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>
+                      <strong className="text-amber-300">macOS Gatekeeper warning expected.</strong> Right-click the app → &quot;Open&quot;, or allow in System Settings → Privacy &amp; Security. This is safe — we&apos;re working on Apple certification.
+                    </span>
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
