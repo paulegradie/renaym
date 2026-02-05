@@ -173,21 +173,36 @@ export default function DownloadPage() {
           )}
         </div>
 
-        {/* Security Notice */}
-        <div className="mb-8 p-4 glass-card rounded-xl border border-amber-500/20 bg-amber-500/5">
-          <div className="flex items-start space-x-3">
-            <div className="p-2 bg-amber-500/20 rounded-lg flex-shrink-0">
-              <svg className="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        {/* Security & Trust Notice */}
+        <div className="mb-8 p-5 glass-card rounded-xl border border-cyan-500/20 bg-cyan-500/5">
+          <div className="flex items-start gap-4">
+            <div className="p-2.5 bg-cyan-500/20 rounded-lg flex-shrink-0">
+              <svg className="w-6 h-6 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" />
               </svg>
             </div>
-            <div>
-              <h4 className="font-medium text-amber-300 mb-1">A note about security warnings</h4>
-              <p className="text-zinc-400 text-sm">
-                Renaym is a new product and we haven&apos;t yet set up publisher verification with Microsoft and Apple.
-                You may see warnings from your browser or operating system when downloading or installing.
-                This is normal for new software — you can safely proceed with the download.
-              </p>
+            <div className="flex-1">
+              <h4 className="font-semibold text-cyan-300 mb-2 text-base">Safe & Trustworthy Software</h4>
+              <div className="space-y-2 text-sm text-zinc-400">
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong className="text-zinc-300">macOS:</strong> Fully code-signed and notarized by Apple — no warnings!</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong className="text-zinc-300">Windows:</strong> May show SmartScreen warning (normal for new publishers). Click &quot;More info&quot; → &quot;Run anyway&quot;</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <svg className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong className="text-zinc-300">Privacy:</strong> AI runs 100% locally. No data sent to cloud. No tracking. Open development on GitHub.</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -221,13 +236,31 @@ export default function DownloadPage() {
                     featured
                   />
                   {/* Windows security note */}
-                  {platform.platformKey === 'windows' && (
-                    <p className="text-xs text-zinc-500 mt-2 ml-8 flex items-center gap-1.5">
-                      <svg className="w-3.5 h-3.5 text-amber-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Windows may show a security warning — we&apos;re working on verified publishing. Safe to proceed.
-                    </p>
+                  {(platform.platformKey === 'windows' || platform.platformKey === 'windows-installer') && (
+                    <div className="mt-3 ml-8 p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                      <p className="text-xs text-amber-300/90 flex items-start gap-2">
+                        <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>
+                          <strong className="text-amber-300">Windows SmartScreen warning expected.</strong> As a new publisher, Windows will show a security warning.
+                          Click &quot;More info&quot; → &quot;Run anyway&quot; to install. This is safe — we&apos;re working on verified code signing.
+                        </span>
+                      </p>
+                    </div>
+                  )}
+                  {/* macOS security note */}
+                  {(platform.platformKey === 'macos-intel' || platform.platformKey === 'macos-arm') && (
+                    <div className="mt-3 ml-8 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
+                      <p className="text-xs text-emerald-300/90 flex items-start gap-2">
+                        <svg className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span>
+                          <strong className="text-emerald-300">Fully code-signed & notarized by Apple.</strong> No security warnings — installs smoothly!
+                        </span>
+                      </p>
+                    </div>
                   )}
                 </div>
               ))}

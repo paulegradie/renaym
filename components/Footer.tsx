@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,12 +14,14 @@ export default function Footer() {
             <div className="flex items-center space-x-3 mb-4">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-lg blur-md opacity-60" />
-                <div className="relative bg-zinc-900 rounded-lg p-1.5">
-                  <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-                    <polyline points="10 17 15 12 10 7" />
-                    <line x1="15" y1="12" x2="3" y2="12" />
-                  </svg>
+                <div className="relative bg-zinc-900 rounded-lg p-1">
+                  <Image
+                    src="/icon.png"
+                    alt="Renaym Logo"
+                    width={28}
+                    height={28}
+                    className="rounded"
+                  />
                 </div>
               </div>
               <span className="text-xl font-bold gradient-text">Renaym</span>

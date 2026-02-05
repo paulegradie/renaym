@@ -5,21 +5,29 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://renaym.com"),
   title: "Renaym - AI-Powered Media Renaming",
   description: "Intelligent media file renaming with AI-powered filename parsing and TMDB integration. Organize your movie and TV library effortlessly.",
   keywords: "media renamer, file renamer, movie organizer, TV show organizer, TMDB, AI, filename parser",
   authors: [{ name: "Renaym" }],
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
   openGraph: {
     title: "Renaym - AI-Powered Media Renaming",
     description: "Intelligent media file renaming with AI-powered filename parsing and TMDB integration.",
     url: "https://renaym.com",
     siteName: "Renaym",
     type: "website",
+    images: ["/icon.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Renaym - AI-Powered Media Renaming",
     description: "Intelligent media file renaming with AI-powered filename parsing and TMDB integration.",
+    images: ["/icon.png"],
   },
 };
 

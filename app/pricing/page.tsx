@@ -67,7 +67,7 @@ export default function PricingPage() {
 
           {/* Annual Tier */}
           <PricingCard
-            name="Annual"
+            name="1-Year License"
             description="For serious media collectors"
             price="$12"
             period="/year"
@@ -77,42 +77,42 @@ export default function PricingPage() {
               'Custom naming templates',
               'Priority support',
             ]}
-            buttonText="Subscribe"
+            buttonText="Get License"
             onButtonClick={() => handleCheckout('annual')}
             loading={loading === 'annual'}
           />
 
           {/* 2-Year Tier */}
           <PricingCard
-            name="2-Year"
+            name="2-Year License"
             description="Best value for committed users"
             price="$20"
             period="/2 years"
             popular
             badge="Save 17%"
             features={[
-              'Everything in Annual',
+              'Everything in 1-Year',
               'Save $4 vs annual billing',
               'Lock in your price',
             ]}
-            buttonText="Subscribe"
+            buttonText="Get License"
             onButtonClick={() => handleCheckout('2year')}
             loading={loading === '2year'}
           />
 
           {/* Lifetime Tier */}
           <PricingCard
-            name="Lifetime"
+            name="Lifetime License"
             description="One-time purchase, forever yours"
             price="$35"
             period="/once"
             features={[
-              'Everything in Annual',
+              'Everything in 1-Year',
               'Lifetime updates',
               'Pays for itself in ~3 years',
               'Support development',
             ]}
-            buttonText="Buy Lifetime"
+            buttonText="Get Lifetime License"
             onButtonClick={() => handleCheckout('lifetime')}
             loading={loading === 'lifetime'}
           />
@@ -122,7 +122,7 @@ export default function PricingPage() {
           <div className="inline-flex items-center px-6 py-3 rounded-full glass-card">
             <span className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse" />
             <p className="text-zinc-300">
-              <strong className="text-white">14-day free trial</strong> included with all plans. No credit card required to try!
+              All licenses include <strong className="text-white">full features</strong> from day one. Try the free version first!
             </p>
           </div>
         </div>

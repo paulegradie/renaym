@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Create Stripe checkout session
-    // Lifetime is a one-time payment, annual and 2year are subscriptions
+    // Lifetime is a one-time payment, annual and 2year are recurring licenses
     const sessionConfig: Stripe.Checkout.SessionCreateParams = {
       mode: plan === 'lifetime' ? 'payment' : 'subscription',
       line_items: [
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
     // For one-time payments, explicitly create a customer record
     // This ensures we have a proper customer ID in the webhook (not a guest)
-    // For subscriptions, Stripe automatically creates a customer
+    // For recurring licenses, Stripe automatically creates a customer
     if (plan === 'lifetime') {
       sessionConfig.customer_creation = 'always';
     }

@@ -136,6 +136,104 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trust & Security Section */}
+      <section className="py-24 section-dark relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-4 py-2 rounded-full glass-card text-sm text-emerald-300 mb-6 border border-emerald-500/30 bg-emerald-500/5">
+              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" />
+              </svg>
+              Safe & Trustworthy
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Built with your security in mind
+            </h2>
+            <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
+              We&apos;re a startup committed to transparency and earning your trust
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <TrustCard
+              icon={<ShieldCheckIcon />}
+              title="Code Signed & Notarized"
+              description="macOS apps are fully code-signed and notarized by Apple. Windows signing in progress."
+              status="verified"
+            />
+            <TrustCard
+              icon={<LockIcon />}
+              title="Privacy First"
+              description="AI runs 100% locally on your device. No data sent to cloud servers. No tracking."
+              status="verified"
+            />
+            <TrustCard
+              icon={<OpenSourceIcon />}
+              title="Open Development"
+              description="Built in the open. View our releases and verify checksums on GitHub."
+              status="verified"
+            />
+            <TrustCard
+              icon={<NoVirusIcon />}
+              title="Malware Free"
+              description="Clean, honest software. No viruses, no spyware, no hidden surprises."
+              status="verified"
+            />
+            <TrustCard
+              icon={<UpdateIcon />}
+              title="Regular Updates"
+              description="Active development with frequent updates and bug fixes."
+              status="active"
+            />
+            <TrustCard
+              icon={<SupportIcon />}
+              title="Real Support"
+              description="Direct support from the development team. We&apos;re here to help."
+              status="active"
+            />
+          </div>
+
+          {/* Security Notice */}
+          <div className="mt-12 p-6 rounded-2xl glass-card border border-amber-500/20 bg-amber-500/5">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 mt-1">
+                <svg className="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-amber-300 mb-2">
+                  About Security Warnings on Windows
+                </h3>
+                <p className="text-zinc-400 mb-3">
+                  As a new startup, Windows may show security warnings when you download our software. This is normal for new publishers and doesn&apos;t mean the software is unsafe.
+                </p>
+                <div className="space-y-2 text-sm text-zinc-400">
+                  <div className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span><strong>macOS users:</strong> Our app is fully code-signed and notarized by Apple — no warnings!</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    <span><strong>Windows users:</strong> We&apos;re working on verified code signing. Click &quot;More info&quot; → &quot;Run anyway&quot; to install safely.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <svg className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    <span><strong>Why this happens:</strong> New software needs time to build reputation with Microsoft SmartScreen. More downloads = fewer warnings over time.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 hero-gradient" />
@@ -235,6 +333,76 @@ function OfflineIcon() {
   return (
     <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+  );
+}
+
+function TrustCard({ icon, title, description, status }: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  status: 'verified' | 'active';
+}) {
+  return (
+    <div className="group p-6 rounded-2xl glass-card hover:bg-white/[0.06] transition-all duration-300 border border-white/5">
+      <div className="flex items-start gap-4">
+        <div className={`inline-flex p-3 rounded-xl ${status === 'verified' ? 'bg-gradient-to-br from-emerald-500 to-cyan-500' : 'bg-gradient-to-br from-purple-500 to-pink-500'} flex-shrink-0`}>
+          {icon}
+        </div>
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
+          <p className="text-zinc-400 text-sm">{description}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Trust & Security Icons
+function ShieldCheckIcon() {
+  return (
+    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
+  );
+}
+
+function OpenSourceIcon() {
+  return (
+    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+    </svg>
+  );
+}
+
+function NoVirusIcon() {
+  return (
+    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
+function UpdateIcon() {
+  return (
+    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+    </svg>
+  );
+}
+
+function SupportIcon() {
+  return (
+    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
     </svg>
   );
 }
