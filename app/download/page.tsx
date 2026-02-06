@@ -16,8 +16,7 @@ interface LambdaResponse {
     windows: DownloadInfo | { error: string };
     'windows-installer': DownloadInfo | { error: string };
     linux: DownloadInfo | { error: string };
-    'macos-intel': DownloadInfo | { error: string };
-    'macos-arm': DownloadInfo | { error: string };
+    macos: DownloadInfo | { error: string };
   };
 }
 
@@ -25,7 +24,7 @@ interface PlatformDownload {
   platform: string;
   icon: React.ReactNode;
   description: string;
-  platformKey: 'windows' | 'windows-installer' | 'linux' | 'macos-intel' | 'macos-arm';
+  platformKey: 'windows' | 'windows-installer' | 'linux' | 'macos';
   downloadUrl: string | null;
   recommended?: boolean;
   secondary?: boolean;
@@ -60,7 +59,7 @@ const detectOS = (): DetectedOS => {
 // Map platform keys to their OS category
 const getPlatformOS = (key: PlatformDownload['platformKey']): DetectedOS => {
   if (key === 'windows' || key === 'windows-installer') return 'windows';
-  if (key === 'macos-intel' || key === 'macos-arm') return 'macos';
+  if (key === 'macos') return 'macos';
   if (key === 'linux') return 'linux';
   return 'unknown';
 };
@@ -68,7 +67,7 @@ const getPlatformOS = (key: PlatformDownload['platformKey']): DetectedOS => {
 // Get the appropriate icon for a platform
 const getIconForPlatform = (key: PlatformDownload['platformKey']): React.ReactNode => {
   if (key === 'windows' || key === 'windows-installer') return <WindowsIcon />;
-  if (key === 'macos-intel' || key === 'macos-arm') return <AppleIcon />;
+  if (key === 'macos') return <AppleIcon />;
   return <LinuxIcon />;
 };
 
@@ -86,8 +85,7 @@ const getOSDisplayName = (os: DetectedOS): string => {
 const allPlatforms: Omit<PlatformDownload, 'icon'>[] = [
   { platform: "Windows (Installer)", description: "Windows 10 or later (64-bit) — Recommended", platformKey: "windows-installer", downloadUrl: null, recommended: true },
   { platform: "Windows (Portable)", description: "Windows 10 or later (64-bit) — No installation required", platformKey: "windows", downloadUrl: null, secondary: true },
-  { platform: "macOS (Intel)", description: "macOS 11 (Big Sur) or later — Intel Macs", platformKey: "macos-intel", downloadUrl: null },
-  { platform: "macOS (Apple Silicon)", description: "macOS 11 (Big Sur) or later — M1/M2/M3/M4 Macs", platformKey: "macos-arm", downloadUrl: null },
+  { platform: "macOS", description: "macOS 11 (Big Sur) or later — Intel & Apple Silicon", platformKey: "macos", downloadUrl: null, recommended: true },
   { platform: "Linux", description: "Ubuntu 20.04+ or equivalent (64-bit)", platformKey: "linux", downloadUrl: null },
 ];
 
@@ -122,9 +120,8 @@ export default function DownloadPage() {
         setPlatforms(prev => [
           { ...prev[0], downloadUrl: hasError(data.client['windows-installer']) ? null : data.client['windows-installer'].download_url },
           { ...prev[1], downloadUrl: hasError(data.client.windows) ? null : data.client.windows.download_url },
-          { ...prev[2], downloadUrl: hasError(data.client['macos-intel']) ? null : data.client['macos-intel'].download_url },
-          { ...prev[3], downloadUrl: hasError(data.client['macos-arm']) ? null : data.client['macos-arm'].download_url },
-          { ...prev[4], downloadUrl: hasError(data.client.linux) ? null : data.client.linux.download_url },
+          { ...prev[2], downloadUrl: hasError(data.client.macos) ? null : data.client.macos.download_url },
+          { ...prev[3], downloadUrl: hasError(data.client.linux) ? null : data.client.linux.download_url },
         ]);
         return true;
       } catch {
